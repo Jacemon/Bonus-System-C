@@ -1,0 +1,15 @@
+﻿"BonusSystem.exe" (Win32). Загружено "C:\Users\Jacemon\Source\Repos\BonusSystem\x64\Debug\BonusSystem.exe". Символы загружены.
+"BonusSystem.exe" (Win32). Загружено "C:\Windows\System32\ntdll.dll". 
+"BonusSystem.exe" (Win32). Загружено "C:\Windows\System32\kernel32.dll". 
+"BonusSystem.exe" (Win32). Загружено "C:\Windows\System32\KernelBase.dll". 
+"BonusSystem.exe" (Win32). Загружено "C:\Windows\System32\msvcp140d.dll". 
+"BonusSystem.exe" (Win32). Загружено "C:\Windows\System32\vcruntime140d.dll". 
+"BonusSystem.exe" (Win32). Загружено "C:\Windows\System32\vcruntime140_1d.dll". 
+"BonusSystem.exe" (Win32). Загружено "C:\Windows\System32\ucrtbased.dll". 
+Поток 0x59cc завершился с кодом 0 (0x0).
+"BonusSystem.exe" (Win32). Загружено "C:\Windows\System32\sechost.dll". 
+"BonusSystem.exe" (Win32). Загружено "C:\Windows\System32\kernel.appcore.dll". 
+"BonusSystem.exe" (Win32). Загружено "C:\Windows\System32\msvcrt.dll". 
+Поток 0x3fb4 завершился с кодом 0 (0x0).
+Поток 0x54ac завершился с кодом 0 (0x0).
+Программа "[5336] BonusSystem.exe" завершилась с кодом 0 (0x0).
