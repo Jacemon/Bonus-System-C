@@ -48,12 +48,14 @@ void User::Menu() {
     std::string employeeName, newEmployeeName;
     int employeeId;
     int taskId;
+    int newTaskId;
     std::vector<User> users;
     std::map<int, Employee> employees;
     std::shared_ptr<User> user;
     std::shared_ptr<Employee> employee;
     std::map<int, TaskByPoint> tasksByPoint;
     std::map<int, TaskByPercent> tasksByPercent;
+    std::map<int, std::shared_ptr<Task>> tasks;
 
     std::string taskText;
     int points;
@@ -73,7 +75,7 @@ void User::Menu() {
                 std::cout << "6. Показать пользователей" << std::endl;
                 std::cout << "7. Показать работников" << std::endl;
                 std::cout << "8. Показать задачи" << std::endl;
-                std::cout << "9. <- Назад" << std::endl;
+                std::cout << "9. <- Выйти из -" + _login + "-" << std::endl;
 
          
                 // работнику назначают задачу
@@ -321,6 +323,120 @@ void User::Menu() {
                         break;
                     }
                     break;
+                case 4:
+                    std::cout << "1. Добавить задачу работнику" << std::endl;
+                    std::cout << "2. Изменить задачу работнику" << std::endl;
+                    std::cout << "3. Удалить задачу работнику" << std::endl;
+                    std::cout << "4. <- Назад" << std::endl;
+
+                    switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
+                    case 1:
+                        employees = (*_bonusSystem).getEmployees();
+                        if (employees.empty()) {
+                            break;
+                        }
+                        std::cout << "-<Работники>-" << std::endl;
+                        for (std::pair<int, Employee> employee : employees) {
+                            std::cout << employee.first << " - " << employee.second.getName() << std::endl;
+                        }
+
+                        employeeId = check::getNaturalValue("Введите ID работника которому добавить задачу: ");
+
+                        std::cout << "-<Задачи>-" << std::endl;
+                        std::cout << "-По баллам-" << std::endl;
+                        tasksByPoint = (*_bonusSystem).getTasksByPoint();
+                        for (std::pair<int, TaskByPoint> task : tasksByPoint) {
+                            std::cout << task.first << " - " << task.second << std::endl;
+                        }
+                        std::cout << "-По процентам-" << std::endl;
+                        tasksByPercent = (*_bonusSystem).getTasksByPercent();
+                        for (std::pair<int, TaskByPercent> task : tasksByPercent) {
+                            std::cout << task.first << " - " << task.second << std::endl;
+                        }
+
+                        taskId = check::getNaturalValue("Введите ID задачи для добавления: ", "Неверный ввод!");
+
+                        (*_bonusSystem).setTaskToEmployee(employeeId, taskId);
+                        break;
+                    case 2:
+                        employees = (*_bonusSystem).getEmployees();
+                        if (employees.empty()) {
+                            std::cout << "Такого работника нет." << std::endl;
+                            break;
+                        }
+                        std::cout << "-<Работники>-" << std::endl;
+                        for (std::pair<int, Employee> employee : employees) {
+                            std::cout << employee.first << " - " << employee.second.getName() << std::endl;
+                        }
+
+                        employeeId = check::getNaturalValue("Введите ID работника которому изменить задачу: ");
+
+                        tasks = (*_bonusSystem).getEmployeeById(employeeId)->getCurrentTasks();
+                        tasksByPoint = (*_bonusSystem).getTasksByPoint();
+                        tasksByPercent = (*_bonusSystem).getTasksByPercent();
+
+                        if (tasksByPoint.empty() || !tasksByPercent.empty() || tasks.empty()) {
+                            std::cout << "У работника нет задач для измнения или нет свободных задач." << std::endl;
+                            break;
+                        }
+
+                        std::cout << "-<Задачи работника>-" << std::endl;
+                        for (std::pair<int, std::shared_ptr<Task>> task : tasks) {
+                            if (task.second->_type == Task::TaskType::byPoint) {
+                                std::cout << task.first << " - " << *std::static_pointer_cast<TaskByPoint>(task.second) << std::endl;
+                            }
+                            if (task.second->_type == Task::TaskType::byPercent) {
+                                std::cout << task.first << " - " << *std::static_pointer_cast<TaskByPercent>(task.second) << std::endl;
+                            }
+                        }
+                        taskId = check::getNaturalValue("Введите ID задачи которую хотите заменить: ", "Неверный ввод!");
+                        
+                        std::cout << "-<Задачи>-" << std::endl;
+                        if (!tasksByPoint.empty()) {
+                            std::cout << "-По баллам-" << std::endl;
+                            for (std::pair<int, TaskByPoint> task : tasksByPoint) {
+                                std::cout << task.first << " - " << task.second << std::endl;
+                            }
+                        }
+                        if (!tasksByPercent.empty()) {
+                            std::cout << "-По процентам-" << std::endl;
+                            for (std::pair<int, TaskByPercent> task : tasksByPercent) {
+                                std::cout << task.first << " - " << task.second << std::endl;
+                            }
+                        }
+
+                        newTaskId = check::getNaturalValue("Введите ID новой задачи: ", "Неверный ввод!");
+
+                        (*_bonusSystem).editTaskFromEmployee(employeeId, taskId, newTaskId);
+                        break;
+                    case 3:
+                        employees = (*_bonusSystem).getEmployees();
+                        if (employees.empty()) {
+                            break;
+                        }
+                        std::cout << "-<Работники>-" << std::endl;
+                        for (std::pair<int, Employee> employee : employees) {
+                            std::cout << employee.first << " - " << employee.second.getName() << std::endl;
+                        }
+
+                        employeeId = check::getNaturalValue("Введите ID работника которому удалить задачу: ");
+
+                        tasks = (*_bonusSystem).getEmployeeById(employeeId)->getCurrentTasks();
+                        for (std::pair<int, std::shared_ptr<Task>> task : tasks) {
+                            if (task.second->_type == Task::TaskType::byPoint) {
+                                std::cout << task.first << " - " << *std::static_pointer_cast<TaskByPoint>(task.second) << std::endl;
+                            }
+                            if (task.second->_type == Task::TaskType::byPercent) {
+                                std::cout << task.first << " - " << *std::static_pointer_cast<TaskByPercent>(task.second) << std::endl;
+                            }
+                        }
+
+                        taskId = check::getNaturalValue("Введите ID задачи для удаления: ", "Неверный ввод!");
+
+                        (*_bonusSystem).deleteTaskFromEmployee(employeeId, taskId);
+                        break;
+                    }
+                    break;
                 case 6:
                     std::cout << "-<Пользователи>-" << std::endl;
                     users = (*_loginSystem).getUsers();
@@ -337,19 +453,53 @@ void User::Menu() {
                     employees = (*_bonusSystem).getEmployees();
                     for (std::pair<int, Employee> employee : employees) {
                         std::cout << employee.first << " - " << employee.second.getName() << std::endl;
+
+                        tasks = employee.second.getCurrentTasks();
+
+                        for (std::pair<int, std::shared_ptr<Task>> task : tasks) {
+                            if (task.second->_type == Task::TaskType::byPoint) {
+                                std::cout << " * " << *std::static_pointer_cast<TaskByPoint>(task.second) << std::endl;
+                            }
+                            if (task.second->_type == Task::TaskType::byPercent) {
+                                std::cout << " * " << *std::static_pointer_cast<TaskByPercent>(task.second) << std::endl;
+                            }
+                        }
                     }
                     break;
                 case 8:
-                    std::cout << "-<Задачи>-" << std::endl;
-                    std::cout << "-По баллам-" << std::endl;
                     tasksByPoint = (*_bonusSystem).getTasksByPoint();
-                    for (std::pair<int, TaskByPoint> task : tasksByPoint) {
-                        std::cout << task.first << " - " << task.second.getText() << " - " << task.second.getPoints() << std::endl;
-                    }
-                    std::cout << "-По процентам-" << std::endl;
                     tasksByPercent = (*_bonusSystem).getTasksByPercent();
-                    for (std::pair<int, TaskByPercent> task : tasksByPercent) {
-                        std::cout << task.first << " - " << task.second.getText() << " - " << task.second.getPercent() << std::endl;
+                    if (!tasksByPoint.empty() || !tasksByPercent.empty()) {
+                        std::cout << "-<Задачи>-" << std::endl;
+                        if (!tasksByPoint.empty()) {
+                            std::cout << "-По баллам-" << std::endl;
+                            for (std::pair<int, TaskByPoint> task : tasksByPoint) {
+                                std::cout << task.first << " - " << task.second << std::endl;
+                            }
+                        }
+                        if (!tasksByPercent.empty()) {
+                            std::cout << "-По процентам-" << std::endl;
+                            for (std::pair<int, TaskByPercent> task : tasksByPercent) {
+                                std::cout << task.first << " - " << task.second << std::endl;
+                            }
+                        }
+                    }
+                    tasksByPoint = (*_bonusSystem).getHoldedTasksByPoint();
+                    tasksByPercent = (*_bonusSystem).getHoldedTasksByPercent();
+                    if (!tasksByPoint.empty() || !tasksByPercent.empty()) {
+                        std::cout << "-<Взятые задачи>-" << std::endl;
+                        if (!tasksByPoint.empty()) {
+                            std::cout << "-По баллам-" << std::endl;
+                            for (std::pair<int, TaskByPoint> task : tasksByPoint) {
+                                std::cout << task.first << " - " << task.second << std::endl;
+                            }
+                        }
+                        if (!tasksByPercent.empty()) {
+                            std::cout << "-По процентам-" << std::endl;
+                            for (std::pair<int, TaskByPercent> task : tasksByPercent) {
+                                std::cout << task.first << " - " << task.second << std::endl;
+                            }
+                        }
                     }
                     break;
                 case 9:

@@ -6,3 +6,8 @@ TaskByPercent::TaskByPercent(std::string taskText, double percent) :
 double TaskByPercent::getPercent() {
 	return _percent;
 }
+
+std::ostream& operator<<(std::ostream& os, TaskByPercent& task) {
+	os << task._taskText << " - " << task._percent << "%";
+	return os;
+}

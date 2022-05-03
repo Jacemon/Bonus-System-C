@@ -9,5 +9,7 @@ private:
 	friend class BonusSystem;
 public:
 	double getPercent();
+
+	friend std::ostream& operator<<(std::ostream&, TaskByPercent&);
 };
 

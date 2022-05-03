@@ -16,8 +16,10 @@ private:
 	static int EmployeeID;
 
 	std::map<int, std::shared_ptr<Task>> _tasks;
+	std::map<int, std::shared_ptr<Task>> _holdedTasks;
+	std::map<int, std::shared_ptr<Task>> _completedTasks;
 	std::map<int, std::shared_ptr<Employee>> _employees;
-	std::map<int, int> _taskID_employeeID;
+	//std::map<int, int> _taskID_employeeID;
 
 	static double PointPrice;
 public:
@@ -39,8 +41,12 @@ public:
 
 	std::map<int, TaskByPoint> getTasksByPoint();
 	std::map<int, TaskByPercent> getTasksByPercent();
-	// назначить таску сотруднику ()
-	// 
+	std::map<int, TaskByPoint> getHoldedTasksByPoint();
+	std::map<int, TaskByPercent> getHoldedTasksByPercent();
+
+	void setTaskToEmployee(int, int);
+	void deleteTaskFromEmployee(int, int);
+	void editTaskFromEmployee(int, int, int);
 
 	static std::shared_ptr<BonusSystem> getInstance();
 	double getPointPrice();

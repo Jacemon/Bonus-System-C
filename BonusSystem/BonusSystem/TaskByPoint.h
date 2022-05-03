@@ -10,4 +10,6 @@ private:
 	friend class BonusSystem;
 public:
 	int getPoints();
+
+	friend std::ostream& operator<<(std::ostream&, TaskByPoint&);
 };

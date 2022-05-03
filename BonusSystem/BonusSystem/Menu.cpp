@@ -20,7 +20,7 @@ void Menu::startMenu() {
 		switch (check::getNaturalValueBefore(3, ": ", "Неверный ввод!")) {
 		case 1:
 			login = check::getWordValue("Введите логин: ", "Неверный ввод!");
-			password = check::getPasswordValue("Введите новый пароль (мин. " 
+			password = check::getPasswordValue("Введите пароль (мин. " 
 				+ std::to_string(LoginSystem::PASSWORD_MIN_NUMBERS) +
 				" символов): ", "Неверный ввод!", LoginSystem::PASSWORD_MIN_NUMBERS);
 			user = (*loginSystem).LogIn(login, password);

@@ -112,3 +112,84 @@ std::map<int, TaskByPercent> BonusSystem::getTasksByPercent() {
     }
     return tasksByPercent;
 }
+std::map<int, TaskByPoint> BonusSystem::getHoldedTasksByPoint() {
+    std::map<int, TaskByPoint> tasksByPoint;
+    std::map<int, std::shared_ptr<Task>>::iterator it = _holdedTasks.begin();
+    while (it != _holdedTasks.end()) {
+        if (it->second->_type == Task::TaskType::byPoint) {
+            tasksByPoint.insert(std::pair<int, TaskByPoint>(it->first, *(std::static_pointer_cast<TaskByPoint>(it->second))));
+        }
+        it++;
+    }
+    return tasksByPoint;
+}
+std::map<int, TaskByPercent> BonusSystem::getHoldedTasksByPercent() {
+    std::map<int, TaskByPercent> tasksByPercent;
+    std::map<int, std::shared_ptr<Task>>::iterator it = _holdedTasks.begin();
+    while (it != _holdedTasks.end()) {
+        if (it->second->_type == Task::TaskType::byPercent) {
+            tasksByPercent.insert(std::pair<int, TaskByPercent>(it->first, *(std::static_pointer_cast<TaskByPercent>(it->second))));
+        }
+        it++;
+    }
+    return tasksByPercent;
+}
+
+void BonusSystem::setTaskToEmployee(int employeeId, int taskId) {
+    std::map<int, std::shared_ptr<Employee>>::iterator itEmp = _employees.find(employeeId);
+    std::map<int, std::shared_ptr<Task>>::iterator itTsk = _tasks.find(taskId);
+
+    if (itEmp == _employees.end() || itTsk == _tasks.end()) {
+        return;
+    }
+    std::pair<int, std::shared_ptr<Task>> task = std::make_pair(taskId, itTsk->second);
+    _holdedTasks.insert(std::pair<int, std::shared_ptr<Task>>(itTsk->first, itTsk->second));
+    _tasks.erase(itTsk);
+    itEmp->second->addTask(task);
+}
+
+void BonusSystem::deleteTaskFromEmployee(int employeeId, int taskId) {
+    std::map<int, std::shared_ptr<Employee>>::iterator itEmp = _employees.find(employeeId);
+    
+    if (itEmp == _employees.end()) {
+        return;
+    }
+    std::map<int, std::shared_ptr<Task>> employeeTasks = itEmp->second->getCurrentTasks();
+    std::map<int, std::shared_ptr<Task>>::iterator itEmpTsk = employeeTasks.find(taskId);
+    std::map<int, std::shared_ptr<Task>>::iterator itTsk = _holdedTasks.find(taskId);
+
+    if (itEmpTsk == employeeTasks.end() || itTsk == _holdedTasks.end()) {
+        return;
+    }
+    _tasks.insert(std::pair<int, std::shared_ptr<Task>>(itTsk->first, itTsk->second));
+    _holdedTasks.erase(itTsk);
+    itEmp->second->deleteTask(taskId);
+}
+
+void BonusSystem::editTaskFromEmployee(int employeeId, int taskId, int newTaskId) {
+    if (taskId == newTaskId) {
+        return;
+    }
+
+    std::map<int, std::shared_ptr<Employee>>::iterator itEmp = _employees.find(employeeId);
+    if (itEmp == _employees.end()) {
+        return;
+    }
+    std::map<int, std::shared_ptr<Task>> employeeTasks = itEmp->second->getCurrentTasks();
+    std::map<int, std::shared_ptr<Task>>::iterator itEmpTsk = employeeTasks.find(taskId);
+    std::map<int, std::shared_ptr<Task>>::iterator itTsk = _holdedTasks.find(taskId);
+    std::map<int, std::shared_ptr<Task>>::iterator itNewTsk = _tasks.find(newTaskId);
+
+    if (itEmpTsk == employeeTasks.end() || itTsk == _holdedTasks.end() || itNewTsk == _tasks.end()) {
+        return;
+    }
+    std::pair<int, std::shared_ptr<Task>> newTask = std::make_pair(newTaskId, itNewTsk->second);
+
+    _tasks.insert(std::pair<int, std::shared_ptr<Task>>(itTsk->first, itTsk->second));
+    _holdedTasks.erase(itTsk);
+    _holdedTasks.insert(std::pair<int, std::shared_ptr<Task>>(itNewTsk->first, itNewTsk->second));
+    _tasks.erase(itNewTsk);
+
+    itEmp->second->deleteTask(taskId);
+    itEmp->second->addTask(newTask);
+}
