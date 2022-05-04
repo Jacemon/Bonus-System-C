@@ -20,7 +20,7 @@ public:
 
 	std::shared_ptr<User> getUserByLogin(std::string);
 
-	std::vector<User> getUsers();
+	std::map<std::string, User> getUsers();
 
 	static std::shared_ptr<LoginSystem> getInstance();
 

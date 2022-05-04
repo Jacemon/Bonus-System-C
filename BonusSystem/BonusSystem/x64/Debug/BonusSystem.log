@@ -1,2 +1,3 @@
 ﻿  User.cpp
+C:\Users\Jacemon\Source\Repos\Bonus-System\BonusSystem\BonusSystem\User.cpp(302): warning C4715: User::showTasks: значение возвращается не при всех путях выполнения
   BonusSystem.vcxproj -> C:\Users\Jacemon\Source\Repos\Bonus-System\BonusSystem\x64\Debug\BonusSystem.exe

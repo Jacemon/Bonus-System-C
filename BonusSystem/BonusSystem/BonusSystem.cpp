@@ -48,6 +48,24 @@ void BonusSystem::editTask(int taskId, int points) {
         std::static_pointer_cast<TaskByPoint>(it->second)->_points = points;
     }
 }
+void BonusSystem::markTaskCompleted(int taskId) {
+    std::map<int, int>::iterator it = _taskID_employeeID.find(taskId);
+    if (it == _taskID_employeeID.end()) {
+        return;
+    }
+    std::shared_ptr<Employee> employee = getEmployeeById(it->second);
+    std::map<int, std::shared_ptr<Task>> markedTasks = employee->getMarkedTasks();
+    std::map<int, std::shared_ptr<Task>>::iterator itMrkTsk = markedTasks.find(taskId);
+    if (itMrkTsk == markedTasks.end()) {
+        return;
+    }
+    _taskID_employeeID.erase(it);
+    std::map<int, std::shared_ptr<Task>>::iterator itHldTsk = _holdedTasks.find(taskId);
+    _completedTasks.insert(std::pair<int, std::shared_ptr<Task>>(taskId, itHldTsk->second));
+    _holdedTasks.erase(itHldTsk);
+
+    employee->completeTask(taskId);
+}
 void BonusSystem::deleteTask(int taskId) {
     std::map<int, std::shared_ptr<Task>>::iterator it = _tasks.find(taskId);
     if (it != _tasks.end()) {
@@ -134,6 +152,28 @@ std::map<int, TaskByPercent> BonusSystem::getHoldedTasksByPercent() {
     }
     return tasksByPercent;
 }
+std::map<int, TaskByPoint> BonusSystem::getCompletedTasksByPoint() {
+    std::map<int, TaskByPoint> tasksByPoint;
+    std::map<int, std::shared_ptr<Task>>::iterator it = _completedTasks.begin();
+    while (it != _completedTasks.end()) {
+        if (it->second->_type == Task::TaskType::byPoint) {
+            tasksByPoint.insert(std::pair<int, TaskByPoint>(it->first, *(std::static_pointer_cast<TaskByPoint>(it->second))));
+        }
+        it++;
+    }
+    return tasksByPoint;
+}
+std::map<int, TaskByPercent> BonusSystem::getCompletedTasksByPercent() {
+    std::map<int, TaskByPercent> tasksByPercent;
+    std::map<int, std::shared_ptr<Task>>::iterator it = _completedTasks.begin();
+    while (it != _completedTasks.end()) {
+        if (it->second->_type == Task::TaskType::byPercent) {
+            tasksByPercent.insert(std::pair<int, TaskByPercent>(it->first, *(std::static_pointer_cast<TaskByPercent>(it->second))));
+        }
+        it++;
+    }
+    return tasksByPercent;
+}
 
 void BonusSystem::setTaskToEmployee(int employeeId, int taskId) {
     std::map<int, std::shared_ptr<Employee>>::iterator itEmp = _employees.find(employeeId);
@@ -146,6 +186,7 @@ void BonusSystem::setTaskToEmployee(int employeeId, int taskId) {
     _holdedTasks.insert(std::pair<int, std::shared_ptr<Task>>(itTsk->first, itTsk->second));
     _tasks.erase(itTsk);
     itEmp->second->addTask(task);
+    _taskID_employeeID.insert(std::pair<int, int>(taskId, employeeId));
 }
 
 void BonusSystem::deleteTaskFromEmployee(int employeeId, int taskId) {
@@ -161,6 +202,10 @@ void BonusSystem::deleteTaskFromEmployee(int employeeId, int taskId) {
     if (itEmpTsk == employeeTasks.end() || itTsk == _holdedTasks.end()) {
         return;
     }
+
+    std::map<int, int>::iterator itTskIdEmpId = _taskID_employeeID.find(taskId);
+    _taskID_employeeID.erase(itTskIdEmpId);
+
     _tasks.insert(std::pair<int, std::shared_ptr<Task>>(itTsk->first, itTsk->second));
     _holdedTasks.erase(itTsk);
     itEmp->second->deleteTask(taskId);
@@ -184,6 +229,10 @@ void BonusSystem::editTaskFromEmployee(int employeeId, int taskId, int newTaskId
         return;
     }
     std::pair<int, std::shared_ptr<Task>> newTask = std::make_pair(newTaskId, itNewTsk->second);
+
+    std::map<int, int>::iterator itTskIdEmpId = _taskID_employeeID.find(taskId);
+    _taskID_employeeID.erase(itTskIdEmpId);
+    _taskID_employeeID.insert(std::pair<int, int>(newTaskId, employeeId));
 
     _tasks.insert(std::pair<int, std::shared_ptr<Task>>(itTsk->first, itTsk->second));
     _holdedTasks.erase(itTsk);

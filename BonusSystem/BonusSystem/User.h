@@ -17,6 +17,18 @@ private:
 	std::pair<int, std::shared_ptr<Employee>> _employee;
 
 	bool LogIn(std::string, std::string);
+	bool showUsers(bool sort);
+	bool showEmployees(bool sort);
+	bool showTasks(bool sort, int taskType = 0);
+	bool showEmployeeTasks(bool sort, std::shared_ptr<Employee> employee);
+	bool showEmployeeWithCompletedTask(bool sort);
+
+	bool searchUser(std::string);
+	bool searchEmployee(std::string, bool);
+	bool searchEmployee(int, bool);
+	bool searchTask(int);
+	bool searchTask(double);
+
 	void Menu();
 
 	friend class LoginSystem;

@@ -19,7 +19,7 @@ private:
 	std::map<int, std::shared_ptr<Task>> _holdedTasks;
 	std::map<int, std::shared_ptr<Task>> _completedTasks;
 	std::map<int, std::shared_ptr<Employee>> _employees;
-	//std::map<int, int> _taskID_employeeID;
+	std::map<int, int> _taskID_employeeID;
 
 	static double PointPrice;
 public:
@@ -38,11 +38,14 @@ public:
 	void editTask(int, std::string);
 	void editTask(int, double);
 	void editTask(int, int);
+	void markTaskCompleted(int);
 
 	std::map<int, TaskByPoint> getTasksByPoint();
 	std::map<int, TaskByPercent> getTasksByPercent();
 	std::map<int, TaskByPoint> getHoldedTasksByPoint();
 	std::map<int, TaskByPercent> getHoldedTasksByPercent();
+	std::map<int, TaskByPoint> getCompletedTasksByPoint();
+	std::map<int, TaskByPercent> getCompletedTasksByPercent();
 
 	void setTaskToEmployee(int, int);
 	void deleteTaskFromEmployee(int, int);

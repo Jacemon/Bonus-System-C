@@ -25,6 +25,9 @@ void LoginSystem::addUser(std::string login, std::string password, User::Role ro
 }
 
 void LoginSystem::deleteUser(std::string login) {
+    if (getUserByLogin(login)->_role == User::Role::admin) {
+        return;
+    }
     _users.erase(login);
 }
 
@@ -35,6 +38,7 @@ void LoginSystem::editUserLogin(std::string login, std::string newLogin) {
     }
     std::shared_ptr<User> user = it->second;
     (*user)._login = newLogin;
+    _users.erase(it);
     _users.insert(std::pair<std::string, std::shared_ptr<User>>(newLogin, user));
 }
 
@@ -52,8 +56,7 @@ void LoginSystem::editUserPassword(std::string login, std::string newPassword) {
         return;
     }
     std::shared_ptr<User> user = it->second;
-    (*user)._passwordHash = std::hash<std::string>{ }(newPassword);;
-    _users.insert(std::pair<std::string, std::shared_ptr<User>>(login, user));
+    (*user)._passwordHash = std::hash<std::string>{ }(newPassword);
 }
 
 void LoginSystem::setEmployeeToUser(std::shared_ptr<BonusSystem> bonusSystem, std::string login, int employeeId) {
@@ -76,12 +79,12 @@ void LoginSystem::deleteEmployeeOnUsers(int employeeId) {
     }
 }
 
-std::vector<User> LoginSystem::getUsers() {
-    std::vector<User> users;
+std::map<std::string, User> LoginSystem::getUsers() {
+    std::map<std::string, User> users;
     std::map<std::string, std::shared_ptr<User>>::iterator it = _users.begin();
 
     while (it != _users.end()) {
-        users.push_back(User(*(it->second)));
+        users.insert(std::pair<std::string, User>(it->first, User(*it->second)));
         it++;
     }
 
