@@ -2,13 +2,18 @@
 
 #include <memory>
 
+std::shared_ptr<LoginSystem> LoginSystem::_loginSystem;
+
 std::shared_ptr<LoginSystem> LoginSystem::getInstance() {
-    static std::shared_ptr<LoginSystem> _loginSystem;
     if (_loginSystem == nullptr) {
         _loginSystem = std::make_shared<LoginSystem>(LoginSystem());
         (*_loginSystem).addUser("admin", "admin", User::Role::admin);
     }
     return _loginSystem;
+}
+std::shared_ptr<LoginSystem> LoginSystem::resetToDefault() {
+    _loginSystem = nullptr;
+    return getInstance();
 }
 
 std::shared_ptr<User> LoginSystem::LogIn(std::string login, std::string password) {
@@ -19,9 +24,19 @@ std::shared_ptr<User> LoginSystem::LogIn(std::string login, std::string password
     return nullptr;
 }
 
+LoginSystem::LoginSystem() { }
+
+LoginSystem::LoginSystem(const LoginSystem& copy) : 
+    _users(copy._users), _userLogin_employeeID(copy._userLogin_employeeID) { }
+   
+
 void LoginSystem::addUser(std::string login, std::string password, User::Role role) {
 	_users.insert(std::pair<std::string, 
         std::shared_ptr<User>>(login, std::make_shared<User>(login, password, role)));
+}
+void LoginSystem::addUser(User user) {
+    _users.insert(std::pair<std::string, 
+        std::shared_ptr<User>>(user._login, std::make_shared<User>(user)));
 }
 
 void LoginSystem::deleteUser(std::string login) {
@@ -66,6 +81,8 @@ void LoginSystem::setEmployeeToUser(std::shared_ptr<BonusSystem> bonusSystem, st
     }
     getUserByLogin(login)->_employee.second = employee;
     getUserByLogin(login)->_employee.first = employeeId;
+    _userLogin_employeeID.erase(login);
+    _userLogin_employeeID.insert(std::pair<std::string, int>(login, employeeId));
 }
 
 void LoginSystem::deleteEmployeeOnUsers(int employeeId) {
@@ -74,6 +91,7 @@ void LoginSystem::deleteEmployeeOnUsers(int employeeId) {
     while (it != _users.end()) {
         if (it->second->_employee.first == employeeId) {
             it->second->_employee = std::pair<int, std::shared_ptr<Employee>>();
+            _userLogin_employeeID.erase(it->first);
         }
         it++;
     }
@@ -89,4 +107,48 @@ std::map<std::string, User> LoginSystem::getUsers() {
     }
 
     return users;
+}
+
+std::ofstream& operator<<(std::ofstream& ofs, LoginSystem loginSystem) {
+    ofs << loginSystem._users.size() << " " << loginSystem._userLogin_employeeID.size() << std::endl;
+    for (auto user : loginSystem._users) {
+        ofs << *user.second << std::endl;
+    }
+    for (auto userEmployee : loginSystem._userLogin_employeeID) {
+        ofs << userEmployee.first << " " << userEmployee.second << std::endl;
+    }
+    return ofs;
+}
+
+std::ifstream& operator>>(std::ifstream& ifs, LoginSystem& loginSystem) {
+    try {
+        int userSize, userEmployeeSize;
+        std::string login;
+        int employeeId;
+        User user;
+
+        ifs >> userSize >> userEmployeeSize;
+
+        loginSystem._users.clear();
+        loginSystem._userLogin_employeeID.clear();
+        for (int i = 0; i < userSize; i++) {
+            ifs >> user;
+            loginSystem.addUser(user);
+        }
+        for (int i = 0; i < userEmployeeSize; i++) {
+            ifs >> login >> employeeId;
+            loginSystem._userLogin_employeeID.insert(std::pair < std::string, int>(login, employeeId));
+        }
+        if (ifs.fail() != 0) {
+            throw std::string();
+        }
+        auto bonusSystem = BonusSystem::getInstance();
+        for (auto usrLempID : loginSystem._userLogin_employeeID) {
+            loginSystem.setEmployeeToUser(bonusSystem, usrLempID.first, usrLempID.second);
+        }
+    }
+    catch (...) {
+        throw std::string("Произошла ошибка загрузки базы данных системы пользователей.");
+    }
+    return ifs;
 }

@@ -6,42 +6,51 @@
 #include "TaskByPercent.h"
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <map>
 #include <memory>
 
 class BonusSystem {
 private:
-	static int TaskID;
-	static int EmployeeID;
+	static std::shared_ptr<BonusSystem> _bonusSystem;
 
-	std::map<int, std::shared_ptr<Task>> _tasks;
+	int TaskID = 1;
+	int EmployeeID = 1;
+	double PointPrice = 0;
+
+	std::map<int, std::shared_ptr<Task>> _allTasks;
+	std::map<int, std::shared_ptr<Task>> _freeTasks;
 	std::map<int, std::shared_ptr<Task>> _holdedTasks;
 	std::map<int, std::shared_ptr<Task>> _completedTasks;
+
 	std::map<int, std::shared_ptr<Employee>> _employees;
-	std::map<int, int> _taskID_employeeID;
-
-	static double PointPrice;
+	std::map<int, int> _taskID_employeeID;	
 public:
+	static std::shared_ptr<BonusSystem> getInstance();
+	static std::shared_ptr<BonusSystem> resetToDefault();
+	
 	void setPointPrice(double);
+	double getPointPrice();
 
-	int addEmployee(std::string);
+	int addEmployee(std::string, double);
 	void deleteEmployee(int);
 	void editEmployee(int, std::string);
+	void editEmployee(int, double);
 
 	std::shared_ptr<Employee> getEmployeeById(int);
 	std::map<int, Employee> getEmployees();
 
-	void createTaskByPoint(std::string, int);
-	void createTaskByPercent(std::string, double);
+	void addTaskByPoint(std::string, int);
+	void addTaskByPercent(std::string, double);
 	void deleteTask(int);
 	void editTask(int, std::string);
 	void editTask(int, double);
 	void editTask(int, int);
-	void markTaskCompleted(int);
+	void setTaskCompleted(int);
 
-	std::map<int, TaskByPoint> getTasksByPoint();
-	std::map<int, TaskByPercent> getTasksByPercent();
+	std::map<int, TaskByPoint> getFreeTasksByPoint();
+	std::map<int, TaskByPercent> getFreeTasksByPercent();
 	std::map<int, TaskByPoint> getHoldedTasksByPoint();
 	std::map<int, TaskByPercent> getHoldedTasksByPercent();
 	std::map<int, TaskByPoint> getCompletedTasksByPoint();
@@ -51,6 +60,9 @@ public:
 	void deleteTaskFromEmployee(int, int);
 	void editTaskFromEmployee(int, int, int);
 
-	static std::shared_ptr<BonusSystem> getInstance();
-	double getPointPrice();
+	void payBonuses();
+	void payBonuses(int);
+
+	friend std::ofstream& operator<<(std::ofstream&, BonusSystem);
+	friend std::ifstream& operator>>(std::ifstream&, BonusSystem&);
 };

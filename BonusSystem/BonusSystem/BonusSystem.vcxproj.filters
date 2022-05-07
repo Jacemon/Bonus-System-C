@@ -75,4 +75,15 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="PaidBonuses.dat">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="LoginSytem.dat">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="BonusSytem.dat">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+  </ItemGroup>
 </Project>

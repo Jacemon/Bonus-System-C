@@ -161,6 +161,11 @@
     <ClInclude Include="TaskByPercent.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="BonusSytem.dat" />
+    <None Include="LoginSytem.dat" />
+    <None Include="PaidBonuses.dat" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

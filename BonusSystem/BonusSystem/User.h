@@ -17,27 +17,17 @@ private:
 	std::pair<int, std::shared_ptr<Employee>> _employee;
 
 	bool LogIn(std::string, std::string);
-	bool showUsers(bool sort);
-	bool showEmployees(bool sort);
-	bool showTasks(bool sort, int taskType = 0);
-	bool showEmployeeTasks(bool sort, std::shared_ptr<Employee> employee);
-	bool showEmployeeWithCompletedTask(bool sort);
-
-	bool searchUser(std::string);
-	bool searchEmployee(std::string, bool);
-	bool searchEmployee(int, bool);
-	bool searchTask(int);
-	bool searchTask(double);
-
-	void Menu();
 
 	friend class LoginSystem;
 	friend class Menu;
-
 public:
 	User();
 	User(const User& copy);
 	User(std::string, std::string, Role role);
 	bool operator< (const User& other) const;
 	bool operator> (const User& other) const;
+
+	friend std::ostream& operator<<(std::ostream&, User);
+	friend std::ofstream& operator<<(std::ofstream&, User);
+	friend std::ifstream& operator>>(std::ifstream&, User&);
 };
