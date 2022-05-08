@@ -29,4 +29,3 @@ public:
 	void writeBonusSystem(std::shared_ptr<BonusSystem>);
 	void readBonusSystem(std::shared_ptr<BonusSystem>);
 };
-

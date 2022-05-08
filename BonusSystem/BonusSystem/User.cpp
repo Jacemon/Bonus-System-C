@@ -22,7 +22,7 @@ User::User(std::string login, std::string password, Role role) {
     _role = role;
     _login = login;
     _passwordHash = std::hash<std::string>{ }(password);
-    _employee = std::pair<int, std::shared_ptr<Employee>>();
+    _employee = std::pair<int, std::shared_ptr<Employee<std::string>>>();
 }
 
 bool User::operator< (const User& other) const {

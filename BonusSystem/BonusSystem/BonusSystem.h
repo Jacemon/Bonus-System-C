@@ -24,7 +24,7 @@ private:
 	std::map<int, std::shared_ptr<Task>> _holdedTasks;
 	std::map<int, std::shared_ptr<Task>> _completedTasks;
 
-	std::map<int, std::shared_ptr<Employee>> _employees;
+	std::map<int, std::shared_ptr<Employee<std::string>>> _employees;
 	std::map<int, int> _taskID_employeeID;	
 public:
 	static std::shared_ptr<BonusSystem> getInstance();
@@ -38,8 +38,8 @@ public:
 	void editEmployee(int, std::string);
 	void editEmployee(int, double);
 
-	std::shared_ptr<Employee> getEmployeeById(int);
-	std::map<int, Employee> getEmployees();
+	std::shared_ptr<Employee<std::string>> getEmployeeById(int);
+	std::map<int, Employee<std::string>> getEmployees();
 
 	void addTaskByPoint(std::string, int);
 	void addTaskByPercent(std::string, double);
@@ -66,3 +66,4 @@ public:
 	friend std::ofstream& operator<<(std::ofstream&, BonusSystem);
 	friend std::ifstream& operator>>(std::ifstream&, BonusSystem&);
 };
+

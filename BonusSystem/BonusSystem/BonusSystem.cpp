@@ -65,7 +65,7 @@ void BonusSystem::setTaskCompleted(int taskId) {
     if (it == _taskID_employeeID.end()) {
         return;
     }
-    std::shared_ptr<Employee> employee = getEmployeeById(it->second);
+    std::shared_ptr<Employee<std::string>> employee = getEmployeeById(it->second);
     if (employee == nullptr) {
         return;
     }
@@ -83,40 +83,41 @@ void BonusSystem::setTaskCompleted(int taskId) {
 }
 
 int BonusSystem::addEmployee(std::string name, double salary) {
-    _employees.insert(std::pair<int, std::shared_ptr<Employee>>(EmployeeID, new Employee(name, salary)));
+    _employees.insert(std::pair<int, std::shared_ptr<Employee<std::string>>>(EmployeeID,
+        new Employee<std::string>(name, salary)));
     return EmployeeID++;
 }
 void BonusSystem::deleteEmployee(int employeeId) {
-    std::map<int, std::shared_ptr<Employee>>::iterator it = _employees.find(employeeId);
+    std::map<int, std::shared_ptr<Employee<std::string>>>::iterator it = _employees.find(employeeId);
     if (it != _employees.end()) {
         _employees.erase(it);
     }
 }
 void BonusSystem::editEmployee(int employeeId, std::string newName) {
-    std::map<int, std::shared_ptr<Employee>>::iterator it = _employees.find(employeeId);
+    std::map<int, std::shared_ptr<Employee<std::string>>>::iterator it = _employees.find(employeeId);
     if (it != _employees.end()) {
         it->second->setName(newName);
     }
 }
 void BonusSystem::editEmployee(int employeeId, double salary) {
-    std::map<int, std::shared_ptr<Employee>>::iterator it = _employees.find(employeeId);
+    std::map<int, std::shared_ptr<Employee<std::string>>>::iterator it = _employees.find(employeeId);
     if (it != _employees.end()) {
         it->second->setSalary(salary);
     }
 }
 
-std::shared_ptr<Employee> BonusSystem::getEmployeeById(int employeeId) {
-    std::map<int, std::shared_ptr<Employee>>::iterator it = _employees.find(employeeId);
+std::shared_ptr<Employee<std::string>> BonusSystem::getEmployeeById(int employeeId) {
+    std::map<int, std::shared_ptr<Employee<std::string>>>::iterator it = _employees.find(employeeId);
     if (it == _employees.end()) {
         return nullptr;
     }
     return it->second;
 }
-std::map<int, Employee> BonusSystem::getEmployees() {
-    std::map<int, Employee> employees;
-    std::map<int, std::shared_ptr<Employee>>::iterator it = _employees.begin();
+std::map<int, Employee<std::string>> BonusSystem::getEmployees() {
+    std::map<int, Employee<std::string>> employees;
+    std::map<int, std::shared_ptr<Employee<std::string>>>::iterator it = _employees.begin();
     while (it != _employees.end()) {
-        employees.insert(std::pair<int, Employee>(it->first, Employee(*it->second)));
+        employees.insert(std::pair<int, Employee<std::string>>(it->first, Employee<std::string>(*it->second)));
         it++;
     }
     return employees;
@@ -190,7 +191,7 @@ std::map<int, TaskByPercent> BonusSystem::getCompletedTasksByPercent() {
 }
 
 void BonusSystem::setTaskToEmployee(int employeeId, int taskId) {
-    std::map<int, std::shared_ptr<Employee>>::iterator itEmp = _employees.find(employeeId);
+    std::map<int, std::shared_ptr<Employee<std::string>>>::iterator itEmp = _employees.find(employeeId);
     std::map<int, std::shared_ptr<Task>>::iterator itTsk = _freeTasks.find(taskId);
 
     if (itEmp == _employees.end() || itTsk == _freeTasks.end()) {
@@ -203,7 +204,7 @@ void BonusSystem::setTaskToEmployee(int employeeId, int taskId) {
     _taskID_employeeID.insert(std::pair<int, int>(taskId, employeeId));
 }
 void BonusSystem::deleteTaskFromEmployee(int employeeId, int taskId) {
-    std::map<int, std::shared_ptr<Employee>>::iterator itEmp = _employees.find(employeeId);
+    std::map<int, std::shared_ptr<Employee<std::string>>>::iterator itEmp = _employees.find(employeeId);
     
     if (itEmp == _employees.end()) {
         return;
@@ -228,7 +229,7 @@ void BonusSystem::editTaskFromEmployee(int employeeId, int taskId, int newTaskId
         return;
     }
 
-    std::map<int, std::shared_ptr<Employee>>::iterator itEmp = _employees.find(employeeId);
+    std::map<int, std::shared_ptr<Employee<std::string>>>::iterator itEmp = _employees.find(employeeId);
     if (itEmp == _employees.end()) {
         return;
     }
@@ -332,7 +333,7 @@ std::ifstream& operator>>(std::ifstream& ifs, BonusSystem& bonusSystem) {
         int taskId, employeeId;
         TaskByPoint taskByPoint;
         TaskByPercent taskByPercent;
-        Employee employee;
+        Employee<std::string> employee;
         for (int i = 0; i < allTaskSize; i++) {
             ifs >> taskType;
             ifs.get();
@@ -373,7 +374,8 @@ std::ifstream& operator>>(std::ifstream& ifs, BonusSystem& bonusSystem) {
         for (int i = 0; i < employeesSize; i++) {
             ifs >> employeeId;
             ifs >> employee;
-            bonusSystem._employees.insert(std::pair<int, std::shared_ptr<Employee>>(employeeId, new Employee(employee)));
+            bonusSystem._employees.insert(std::pair<int, std::shared_ptr<Employee<std::string>>>
+                (employeeId, new Employee<std::string>(employee)));
         }
         if (ifs.fail() != 0) {
             throw std::string();

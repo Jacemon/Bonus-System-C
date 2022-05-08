@@ -17,7 +17,7 @@ public:
 		return _taskText;
 	}
 	std::string _taskText;
-public:
+
 	Task();
 	Task(std::string, TaskType);
 	virtual void setTaskText(std::string) = 0;

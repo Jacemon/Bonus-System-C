@@ -124,7 +124,7 @@ bool Menu::showUsers(bool sort) {
 
 bool Menu::showEmployees(bool sort) {
     std::shared_ptr<BonusSystem> _bonusSystem = BonusSystem::getInstance();
-    std::map<int, Employee> employees = (*_bonusSystem).getEmployees();
+    std::map<int, Employee<std::string>> employees = (*_bonusSystem).getEmployees();
     std::map<int, std::shared_ptr<Task>> tasks;
 
     if (employees.empty()) {
@@ -332,7 +332,7 @@ bool Menu::showEmployeeTasks(bool sort, int employeeId) {
 bool Menu::showEmployeeWithMarkedTask(bool sort) {
     bool flag = false;
     std::shared_ptr<BonusSystem> _bonusSystem = BonusSystem::getInstance();
-    std::map<int, Employee> employees = (*_bonusSystem).getEmployees();
+    std::map<int, Employee<std::string>> employees = (*_bonusSystem).getEmployees();
     std::map<int, std::shared_ptr<Task>> tasks;
 
     std::cout << "-<Работники с помеченными задачами>-" << std::endl;
@@ -401,7 +401,7 @@ bool Menu::searchUser(std::string login) {
 
 bool Menu::searchEmployee(int employeeId, bool sort) {
     std::shared_ptr<BonusSystem> _bonusSystem = BonusSystem::getInstance();
-    std::map<int, Employee> employees = (*_bonusSystem).getEmployees();
+    std::map<int, Employee<std::string>> employees = (*_bonusSystem).getEmployees();
     std::map<int, std::shared_ptr<Task>> tasks;
 
     if (employees.empty()) {
@@ -483,7 +483,7 @@ bool Menu::searchEmployee(int employeeId, bool sort) {
 
 bool Menu::searchEmployee(std::string employeeName, bool sort) {
     std::shared_ptr<BonusSystem> _bonusSystem = BonusSystem::getInstance();
-    std::map<int, Employee> employees = (*_bonusSystem).getEmployees();
+    std::map<int, Employee<std::string>> employees = (*_bonusSystem).getEmployees();
     std::map<int, std::shared_ptr<Task>> tasks;
 
     if (employees.empty()) {
@@ -493,7 +493,7 @@ bool Menu::searchEmployee(std::string employeeName, bool sort) {
 
     auto itE = employees.begin();
     itE = std::find_if(employees.begin(), employees.end(),
-        [&](std::pair<int, Employee> pair) -> bool {
+        [&](std::pair<int, Employee<std::string>> pair) -> bool {
             if (pair.second.getName() == employeeName) {
                 return true;
             }
@@ -681,7 +681,7 @@ void Menu::userMenu(std::shared_ptr<User> mainUser) {
     bool sort = true;
 
     std::shared_ptr<User> user;
-    std::shared_ptr<Employee> employee;
+    std::shared_ptr<Employee<std::string>> employee;
     std::map<int, TaskByPoint> tasksByPoint;
     std::map<int, TaskByPercent> tasksByPercent;
 

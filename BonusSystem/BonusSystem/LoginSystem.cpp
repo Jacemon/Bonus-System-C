@@ -75,7 +75,7 @@ void LoginSystem::editUserPassword(std::string login, std::string newPassword) {
 }
 
 void LoginSystem::setEmployeeToUser(std::shared_ptr<BonusSystem> bonusSystem, std::string login, int employeeId) {
-    std::shared_ptr<Employee> employee = bonusSystem->getEmployeeById(employeeId);
+    std::shared_ptr<Employee<std::string>> employee = bonusSystem->getEmployeeById(employeeId);
     if (employee == nullptr) {
         return;
     }
@@ -90,7 +90,7 @@ void LoginSystem::deleteEmployeeOnUsers(int employeeId) {
 
     while (it != _users.end()) {
         if (it->second->_employee.first == employeeId) {
-            it->second->_employee = std::pair<int, std::shared_ptr<Employee>>();
+            it->second->_employee = std::pair<int, std::shared_ptr<Employee<std::string>>>();
             _userLogin_employeeID.erase(it->first);
         }
         it++;

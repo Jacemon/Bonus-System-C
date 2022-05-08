@@ -14,7 +14,7 @@ private:
 	std::string _login;
 	std::size_t _passwordHash;
 
-	std::pair<int, std::shared_ptr<Employee>> _employee;
+	std::pair<int, std::shared_ptr<Employee<std::string>>> _employee;
 
 	bool LogIn(std::string, std::string);
 
