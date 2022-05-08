@@ -14,5 +14,7 @@ public:
 	friend std::ostream& operator<<(std::ostream&, TaskByPercent);
 	friend std::ofstream& operator<<(std::ofstream&, TaskByPercent);
 	friend std::ifstream& operator>>(std::ifstream&, TaskByPercent&);
+
+	void setTaskText(std::string);
 };
 

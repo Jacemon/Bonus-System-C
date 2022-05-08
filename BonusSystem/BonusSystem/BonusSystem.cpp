@@ -35,7 +35,7 @@ void BonusSystem::addTaskByPercent(std::string taskText, double percent) {
 void BonusSystem::editTask(int taskId, std::string taskText) {
     std::map<int, std::shared_ptr<Task>>::iterator it = _freeTasks.find(taskId);
     if (it != _freeTasks.end()) {
-        it->second->_taskText = taskText;
+        it->second->setTaskText(taskText);
     }
 }
 void BonusSystem::editTask(int taskId, double percent) {

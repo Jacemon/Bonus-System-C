@@ -16,12 +16,10 @@ public:
 	std::string getText() {
 		return _taskText;
 	}
-protected:
 	std::string _taskText;
-
+public:
 	Task();
 	Task(std::string, TaskType);
-	
-	friend class BonusSystem;
+	virtual void setTaskText(std::string) = 0;
 };
 

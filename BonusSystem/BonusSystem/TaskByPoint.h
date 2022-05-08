@@ -14,4 +14,6 @@ public:
 	friend std::ostream& operator<<(std::ostream&, TaskByPoint);
 	friend std::ofstream& operator<<(std::ofstream&, TaskByPoint);
 	friend std::ifstream& operator>>(std::ifstream&, TaskByPoint&);
+
+	void setTaskText(std::string);
 };

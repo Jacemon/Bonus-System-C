@@ -12,6 +12,10 @@ void TaskByPercent::setPercent(double percent) {
 	_percent = percent;
 }
 
+void TaskByPercent::setTaskText(std::string taskText) {
+	_taskText = taskText;
+}
+
 std::ostream& operator<<(std::ostream& os, TaskByPercent task) {
 	os << task._taskText << " - " << task._percent << "%";
 	return os;

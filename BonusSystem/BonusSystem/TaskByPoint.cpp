@@ -12,6 +12,9 @@ void TaskByPoint::setPoints(int points) {
 	_points = points;
 }
 
+void TaskByPoint::setTaskText(std::string taskText) {
+	_taskText = taskText;
+}
 std::ostream& operator<<(std::ostream& os, TaskByPoint task) {
 	os << task._taskText << " - " << task._points << "á.";
 	return os;
