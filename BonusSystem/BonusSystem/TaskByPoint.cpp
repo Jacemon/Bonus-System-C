@@ -8,6 +8,10 @@ int TaskByPoint::getPoints() {
 	return _points;
 }
 
+void TaskByPoint::setPoints(int points) {
+	_points = points;
+}
+
 std::ostream& operator<<(std::ostream& os, TaskByPoint task) {
 	os << task._taskText << " - " << task._points << "á.";
 	return os;
@@ -21,6 +25,9 @@ std::ofstream& operator<<(std::ofstream& ofs, TaskByPoint task) {
 std::ifstream& operator>>(std::ifstream& ifs, TaskByPoint& task) {
 	std::getline(ifs, task._taskText);
 	ifs >> task._points;
+	if (ifs.fail() != 0) {
+		throw std::string();
+	}
 	task._type = Task::TaskType::byPoint;
 	return ifs;
 }

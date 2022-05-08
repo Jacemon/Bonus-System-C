@@ -41,13 +41,13 @@ void BonusSystem::editTask(int taskId, std::string taskText) {
 void BonusSystem::editTask(int taskId, double percent) {
     std::map<int, std::shared_ptr<Task>>::iterator it = _freeTasks.find(taskId);
     if (it != _freeTasks.end() && it->second->_type == Task::TaskType::byPercent) {
-        std::static_pointer_cast<TaskByPercent>(it->second)->_percent = percent;
+        std::static_pointer_cast<TaskByPercent>(it->second)->setPercent(percent);
     }
 }
 void BonusSystem::editTask(int taskId, int points) {
     std::map<int, std::shared_ptr<Task>>::iterator it = _freeTasks.find(taskId);
     if (it != _freeTasks.end() && it->second->_type == Task::TaskType::byPoint) {
-        std::static_pointer_cast<TaskByPoint>(it->second)->_points = points;
+        std::static_pointer_cast<TaskByPoint>(it->second)->setPoints(points);
     }
 }
 void BonusSystem::deleteTask(int taskId) {
@@ -322,9 +322,6 @@ std::ofstream& operator<<(std::ofstream& ofs, BonusSystem bonusSystem) {
     }
     return ofs;
 }
-/// <summary>
-/// ÒĞÀÉ ÊÅÒ× Â Ñ×ÈòÛÂÀÍÈÅ
-/// </summary>
 std::ifstream& operator>>(std::ifstream& ifs, BonusSystem& bonusSystem) {
     try {
         int allTaskSize, freeTaskSize, holdedTaskSize, completedTaskSize, employeesSize, taskIDEmployeeIdSize;

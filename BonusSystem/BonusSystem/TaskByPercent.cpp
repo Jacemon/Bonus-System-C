@@ -8,6 +8,10 @@ double TaskByPercent::getPercent() {
 	return _percent;
 }
 
+void TaskByPercent::setPercent(double percent) {
+	_percent = percent;
+}
+
 std::ostream& operator<<(std::ostream& os, TaskByPercent task) {
 	os << task._taskText << " - " << task._percent << "%";
 	return os;
@@ -21,6 +25,9 @@ std::ofstream& operator<<(std::ofstream& ofs, TaskByPercent task) {
 std::ifstream& operator>>(std::ifstream& ifs, TaskByPercent& task) {
 	std::getline(ifs, task._taskText);
 	ifs >> task._percent;
+	if (ifs.fail() != 0) {
+		throw std::string();
+	}
 	task._type = Task::TaskType::byPercent;
 	return ifs;
 }

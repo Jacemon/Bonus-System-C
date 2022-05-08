@@ -140,21 +140,19 @@ std::ofstream& operator<<(std::ofstream& ofs, Employee employee) {
 	return ofs;
 }
 std::ifstream& operator>>(std::ifstream& ifs, Employee& employee) {
-	try {
-		int marTaskSize, comTaskSize, taskId;
-		ifs >> employee._name >> employee._salary
-			>> employee._points >> employee._percents >> marTaskSize >> comTaskSize;
-		for (int i = 0; i < marTaskSize; i++) {
-			ifs >> taskId;
-			employee._markedTasks.insert(std::pair<int, std::shared_ptr<Task>>(taskId, nullptr));
-		}
-		for (int i = 0; i < comTaskSize; i++) {
-			ifs >> taskId;
-			employee._completedTasks.insert(std::pair<int, std::shared_ptr<Task>>(taskId, nullptr));
-		}
+	int marTaskSize, comTaskSize, taskId;
+	ifs >> employee._name >> employee._salary
+		>> employee._points >> employee._percents >> marTaskSize >> comTaskSize;
+	for (int i = 0; i < marTaskSize; i++) {
+		ifs >> taskId;
+		employee._markedTasks.insert(std::pair<int, std::shared_ptr<Task>>(taskId, nullptr));
 	}
-	catch (...) {
-		throw std::string("Ошибка загрузки работника!");
+	for (int i = 0; i < comTaskSize; i++) {
+		ifs >> taskId;
+		employee._completedTasks.insert(std::pair<int, std::shared_ptr<Task>>(taskId, nullptr));
+	}
+	if (ifs.fail() != 0) {
+		throw std::string();
 	}
 	return ifs;
 }

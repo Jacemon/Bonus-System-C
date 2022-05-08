@@ -59,6 +59,9 @@ std::ofstream& operator<<(std::ofstream& ofs, User user) {
 std::ifstream& operator>>(std::ifstream& ifs, User& user) {
     int role;
     ifs >> user._login >> user._passwordHash >> role;
+    if (ifs.fail() != 0) {
+        throw std::string();
+    }
     user._role = static_cast<User::Role>(role);
     return ifs;
 };

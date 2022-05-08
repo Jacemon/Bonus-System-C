@@ -42,9 +42,6 @@ void Menu::startMenu() {
 	std::string login;
 	std::string password;
 
-    /// <summary>
-    /// //////Связать имполера и юзера
-    /// </summary>
     try {
         readBonusSystem(bonusSystem);
         readLoginSystem(loginSystem);
@@ -688,407 +685,501 @@ void Menu::userMenu(std::shared_ptr<User> mainUser) {
     std::map<int, TaskByPoint> tasksByPoint;
     std::map<int, TaskByPercent> tasksByPercent;
 
-    try {
-        switch (mainUser->_role) {
-        case User::Role::admin:
-            while (true) {
+    switch (mainUser->_role) {
+    case User::Role::admin:
+        while (true) {
+            system("cls");
+            std::cout << "Админ меню -" + mainUser->_login + "-: " << std::endl;
+            std::cout << "1. Взаимодействия с пользователями" << std::endl;
+            std::cout << "2. Взаимодействие с работниками" << std::endl;
+            std::cout << "3. Взаимодействие с задачами" << std::endl;
+            std::cout << "4. Взаимодействие с ценой балла" << std::endl;
+            std::cout << "5. Выплатить премии" << std::endl;
+            std::cout << "6. Установить тип сортировки" << std::endl;
+            std::cout << "7. Поиск" << std::endl;
+            std::cout << "8. <- Выйти из -" + mainUser->_login + "-" << std::endl;
+
+            switch (check::getNaturalValueBefore(8, ">>> ", "Неверный ввод!")) {
+            case 1:
                 system("cls");
-                std::cout << "Админ меню -" + mainUser->_login + "-: " << std::endl;
-                std::cout << "1. Взаимодействия с пользователями" << std::endl;
-                std::cout << "2. Взаимодействие с работниками" << std::endl;
-                std::cout << "3. Взаимодействие с задачами" << std::endl;
-                std::cout << "4. Взаимодействие с ценой балла" << std::endl;
-                std::cout << "5. Выплатить премии" << std::endl;
-                std::cout << "6. Установить тип сортировки" << std::endl;
-                std::cout << "7. Поиск" << std::endl;
-                std::cout << "8. <- Выйти из -" + mainUser->_login + "-" << std::endl;
 
-                switch (check::getNaturalValueBefore(8, ">>> ", "Неверный ввод!")) {
+                showUsers(sort);
+
+                std::cout << "1. Добавить пользователя" << std::endl;
+                std::cout << "2. Изменить пользователя" << std::endl;
+                std::cout << "3. Удалить пользователя" << std::endl;
+                std::cout << "4. <- Назад" << std::endl;
+
+                switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
                 case 1:
-                    system("cls");
+                    userLogin = check::getWordValue("Введите логин: ", "Неверный ввод!");
+                    userPassword = check::getPasswordValue("Введите пароль (мин. "
+                        + std::to_string(LoginSystem::PASSWORD_MIN_NUMBERS) +
+                        " символов): ", "Неверный ввод!", LoginSystem::PASSWORD_MIN_NUMBERS);
 
-                    showUsers(sort);
+                    (*_loginSystem).addUser(userLogin, userPassword, User::Role::common);
+                    break;
+                case 2:
+                    if (!showUsers(sort)) {
+                        break;
+                    }
 
-                    std::cout << "1. Добавить пользователя" << std::endl;
-                    std::cout << "2. Изменить пользователя" << std::endl;
-                    std::cout << "3. Удалить пользователя" << std::endl;
+                    userLogin = check::getWordValue("Введите логин изменяемого пользователя: ", "Неверный ввод!");
+                    user = (*_loginSystem).getUserByLogin(userLogin);
+                    if (user == nullptr) {
+                        std::cout << "Пользователя с данным логином не существует!" << std::endl;
+                        break;
+                    }
+
+                    std::cout << "1. Изменить логин" << std::endl;
+                    std::cout << "2. Изменить пароль" << std::endl;
+                    std::cout << "3. Назначить работника" << std::endl;
                     std::cout << "4. <- Назад" << std::endl;
-
                     switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
                     case 1:
-                        userLogin = check::getWordValue("Введите логин: ", "Неверный ввод!");
-                        userPassword = check::getPasswordValue("Введите пароль (мин. "
+                        newUserLogin = check::getWordValue("Введите новый логин: ", "Неверный ввод!");
+
+                        (*_loginSystem).editUserLogin(userLogin, newUserLogin);
+                        break;
+                    case 2:
+                        newUserPassword = check::getPasswordValue("Введите новый пароль (мин. "
                             + std::to_string(LoginSystem::PASSWORD_MIN_NUMBERS) +
                             " символов): ", "Неверный ввод!", LoginSystem::PASSWORD_MIN_NUMBERS);
 
-                        (*_loginSystem).addUser(userLogin, userPassword, User::Role::common);
-                        break;
-                    case 2:
-                        if (!showUsers(sort)) {
-                            break;
-                        }
-
-                        userLogin = check::getWordValue("Введите логин изменяемого пользователя: ", "Неверный ввод!");
-                        user = (*_loginSystem).getUserByLogin(userLogin);
-                        if (user == nullptr) {
-                            std::cout << "Пользователя с данным логином не существует!" << std::endl;
-                            break;
-                        }
-
-                        std::cout << "1. Изменить логин" << std::endl;
-                        std::cout << "2. Изменить пароль" << std::endl;
-                        std::cout << "3. Назначить работника" << std::endl;
-                        std::cout << "4. <- Назад" << std::endl;
-                        switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
-                        case 1:
-                            newUserLogin = check::getWordValue("Введите новый логин: ", "Неверный ввод!");
-
-                            (*_loginSystem).editUserLogin(userLogin, newUserLogin);
-                            break;
-                        case 2:
-                            newUserPassword = check::getPasswordValue("Введите новый пароль (мин. "
-                                + std::to_string(LoginSystem::PASSWORD_MIN_NUMBERS) +
-                                " символов): ", "Неверный ввод!", LoginSystem::PASSWORD_MIN_NUMBERS);
-
-                            (*_loginSystem).editUserPassword(userLogin, newUserPassword);
-                            break;
-                        case 3:
-                            if (!showEmployees(sort)) {
-                                break;
-                            }
-
-                            employeeId = check::getNaturalValue("Введите ID нового работника: ", "Неверный ввод!");
-                            employee = (*_bonusSystem).getEmployeeById(employeeId);
-                            if (employee == nullptr) {
-                                std::cout << "Работника с таким ID не существует" << std::endl;
-                                break;
-                            }
-                            (*_loginSystem).setEmployeeToUser(_bonusSystem, userLogin, employeeId);
-                            break;
-                        }
-                        break;
-                    case 3:
-                        if (!showUsers(sort)) {
-                            break;
-                        }
-
-                        userLogin = check::getWordValue("Введите логин для удаления: ", "Неверный ввод!");
-
-                        (*_loginSystem).deleteUser(userLogin);
-                        break;
-                    }
-                    break;
-                case 2:
-                    system("cls");
-
-                    showEmployees(sort);
-
-                    std::cout << "1. Добавить работника" << std::endl;
-                    std::cout << "2. Изменить работника" << std::endl;
-                    std::cout << "3. Удалить работника" << std::endl;
-                    std::cout << "4. <- Назад" << std::endl;
-
-                    switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
-                    case 1:
-                        employeeName = check::getProperNameValue("Введите имя работника: ", "Неверный ввод");
-                        salary = check::getDoubleValue("Введите зарплату работника: ", "Неверный ввод");
-                        (*_bonusSystem).addEmployee(employeeName, salary);
-                        break;
-                    case 2:
-                        if (!showEmployees(sort)) {
-                            break;
-                        }
-
-                        employeeId = check::getNaturalValue("Введите ID работника для изменения: ", "Неверный ввод");
-
-                        std::cout << "1. Изменить имя" << std::endl;
-                        std::cout << "2. Изменить зарплату" << std::endl;
-                        std::cout << "3. Изменить задачи" << std::endl;
-                        std::cout << "4. <- Назад" << std::endl;
-                        switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
-                        case 1:
-                            newEmployeeName = check::getProperNameValue("Введите новое имя работника: ", "Неверный ввод");
-                            (*_bonusSystem).editEmployee(employeeId, newEmployeeName);
-                            break;
-                        case 2:
-                            salary = check::getDoubleValue("Введите новую зарплату работника: ", "Неверный ввод");
-                            (*_bonusSystem).editEmployee(employeeId, salary);
-                            break;
-                        case 3:
-                            employee = (*_bonusSystem).getEmployeeById(employeeId);
-                            std::cout << *employee << std::endl;
-
-                            std::cout << "1. Добавить задачу" << std::endl;
-                            std::cout << "2. Пометить задачу выполненной" << std::endl;
-                            std::cout << "3. Удалить задачу" << std::endl;
-                            std::cout << "4. <- Назад" << std::endl;
-
-                            switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
-                            case 1:
-                                if (!showTasks(sort, 1)) {
-                                    break;
-                                }
-
-                                taskId = check::getNaturalValue("Введите ID задачи для добавления: ", "Неверный ввод!");
-
-                                (*_bonusSystem).setTaskToEmployee(employeeId, taskId);
-                                break;
-                            case 2:
-                                std::cout << "Невыполненные задачи ( - ) | Помеченные задачи ( * ) | Выполненные задачи ( + )" << std::endl;
-                                std::cout << "Помечать можно только невыполненные задачи!" << std::endl;
-                                taskId = check::getNaturalValue("Введите ID задачи которую хотите пометить: ", "Неверный ввод!");
-                                employee->markTaskCompleted(taskId);
-                                break;
-                            case 3:
-                                std::cout << "Удалить можно только свободную задачу!" << std::endl;
-                                taskId = check::getNaturalValue("Введите ID задачи для удаления: ", "Неверный ввод!");
-
-                                (*_bonusSystem).deleteTaskFromEmployee(employeeId, taskId);
-                                break;
-                            }
-                            break;
-                        }
+                        (*_loginSystem).editUserPassword(userLogin, newUserPassword);
                         break;
                     case 3:
                         if (!showEmployees(sort)) {
                             break;
                         }
 
-                        employeeId = check::getNaturalValue("Введите ID работника для удаления: ", "Неверный ввод");
-                        (*_bonusSystem).deleteEmployee(employeeId);
-                        (*_loginSystem).deleteEmployeeOnUsers(employeeId);
-                        break;
-                    }
-                    break;
-                case 3:
-                    system("cls");
-
-                    showTasks(sort);
-
-                    std::cout << "1. Добавить задачу" << std::endl;
-                    std::cout << "2. Изменить задачу" << std::endl;
-                    std::cout << "3. Удалить задачу" << std::endl;
-                    std::cout << "4. Подтвердить выполнение задачи" << std::endl;
-                    std::cout << "5. <- Назад" << std::endl;
-
-                    switch (check::getNaturalValueBefore(5, ">>> ", "Неверный ввод!")) {
-                    case 1:
-                        std::cout << "Введите текст задания (Enter для конца ввода): ";
-                        std::getline(std::cin, taskText, '\n');
-
-                        std::cout << "1. Добавить задачу за баллы" << std::endl;
-                        std::cout << "2. Добавить задачу за процент от з/п" << std::endl;
-                        std::cout << "3. <- Назад" << std::endl;
-
-                        switch (check::getNaturalValueBefore(3, ">>> ", "Неверный ввод!")) {
-                        case 1:
-                            points = check::getNaturalValue("Введите количество баллов: ", "Неверный ввод!");
-                            (*_bonusSystem).addTaskByPoint(taskText, points);
-                            break;
-                        case 2:
-                            percents = check::getDoubleValueFromTo(0, 100, "Введите количество процентов: ", "Неверный ввод!");
-                            (*_bonusSystem).addTaskByPercent(taskText, percents);
-                            break;
-                        }
-                        break;
-                    case 2:
-                        std::cout << "Изменить можно только свободные задачи!" << std::endl;
-                        if (!showTasks(sort, 1)) {
-                            break;
-                        }
-
-                        std::cout << "1. Изменить текст задачи" << std::endl;
-                        std::cout << "2. Изменить баллы задачи" << std::endl;
-                        std::cout << "3. Изменить проценты задачи" << std::endl;
-                        std::cout << "4. <- Назад" << std::endl;
-
-                        switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
-                        case 1:
-                            taskId = check::getNaturalValue("Введите ID задачи для изменения: ", "Неверный ввод!");
-                            std::cout << "Введите новый текст задания (Enter для конца ввода): ";
-                            std::getline(std::cin, taskText, '\n');
-
-                            (*_bonusSystem).editTask(taskId, taskText);
-                            break;
-                        case 2:
-                            tasksByPoint = (*_bonusSystem).getFreeTasksByPoint();
-                            if (tasksByPoint.empty()) {
-                                std::cout << "Задач за баллы нет." << std::endl;
-                                break;
-                            }
-
-                            taskId = check::getNaturalValue("Введите ID задачи по баллам для изменения: ", "Неверный ввод!");
-                            points = check::getNaturalValue("Введите новое количество баллов: ", "Неверный ввод!");
-
-                            (*_bonusSystem).editTask(taskId, points);
-                            break;
-                        case 3:
-                            tasksByPercent = (*_bonusSystem).getFreeTasksByPercent();
-                            if (tasksByPercent.empty()) {
-                                std::cout << "Задач за проценты нет." << std::endl;
-                                break;
-                            }
-
-                            taskId = check::getNaturalValue("Введите ID задачи по процентам для изменения: ", "Неверный ввод!");
-                            percents = check::getDoubleValueFromTo(0, 100, "Введите новое количество процентов: ", "Неверный ввод!");
-
-                            (*_bonusSystem).editTask(taskId, percents);
-                            break;
-                        }
-                        break;
-                    case 3:
-                        tasksByPoint = (*_bonusSystem).getFreeTasksByPoint();
-                        tasksByPercent = (*_bonusSystem).getFreeTasksByPercent();
-                        if (tasksByPoint.empty() && tasksByPercent.empty()) {
-                            std::cout << "Задач нет." << std::endl;
-                            break;
-                        }
-
-                        taskId = check::getNaturalValue("Введите ID задачи для удаления: ", "Неверный ввод!");
-                        (*_bonusSystem).deleteTask(taskId);
-                        break;
-                    case 4:
-                        if (!showEmployeeWithMarkedTask(sort)) {
-                            break;
-                        }
-
-                        employeeId = check::getNaturalValue("Введите ID работника которому выполнить задачу: ");
+                        employeeId = check::getNaturalValue("Введите ID нового работника: ", "Неверный ввод!");
                         employee = (*_bonusSystem).getEmployeeById(employeeId);
                         if (employee == nullptr) {
                             std::cout << "Работника с таким ID не существует" << std::endl;
                             break;
                         }
-                        taskId = check::getNaturalValue("Введите ID задачи которую хотите выполнить: ", "Неверный ввод!");
-                        (*_bonusSystem).setTaskCompleted(taskId);
-
+                        (*_loginSystem).setEmployeeToUser(_bonusSystem, userLogin, employeeId);
                         break;
                     }
                     break;
-                case 4:
-                    std::cout << "Текущая цена балла: 1б. = " << (*_bonusSystem).getPointPrice() << "$" << std::endl;
-
-                    std::cout << "1. Установить новую цену балла" << std::endl;
-                    std::cout << "2. <- Назад" << std::endl;
-
-                    switch (check::getNaturalValueBefore(2, ">>> ", "Неверный ввод!")) {
-                    case 1:
-                        (*_bonusSystem).setPointPrice(check::getDoubleValueFromTo(0, 100, "Введите количество $ за балл: ", "Неверный ввод!"));
+                case 3:
+                    if (!showUsers(sort)) {
                         break;
                     }
+
+                    userLogin = check::getWordValue("Введите логин для удаления: ", "Неверный ввод!");
+
+                    (*_loginSystem).deleteUser(userLogin);
                     break;
-                case 5:
+                }
+                break;
+            case 2:
+                system("cls");
+
+                showEmployees(sort);
+
+                std::cout << "1. Добавить работника" << std::endl;
+                std::cout << "2. Изменить работника" << std::endl;
+                std::cout << "3. Удалить работника" << std::endl;
+                std::cout << "4. <- Назад" << std::endl;
+
+                switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
+                case 1:
+                    employeeName = check::getProperNameValue("Введите имя работника: ", "Неверный ввод");
+                    salary = check::getDoubleValue("Введите зарплату работника: ", "Неверный ввод");
+                    (*_bonusSystem).addEmployee(employeeName, salary);
+                    break;
+                case 2:
                     if (!showEmployees(sort)) {
                         break;
                     }
 
-                    std::cout << "1. Выплатить одному" << std::endl;
-                    std::cout << "2. Выплатить всем" << std::endl;
+                    employeeId = check::getNaturalValue("Введите ID работника для изменения: ", "Неверный ввод");
+
+                    std::cout << "1. Изменить имя" << std::endl;
+                    std::cout << "2. Изменить зарплату" << std::endl;
+                    std::cout << "3. Изменить задачи" << std::endl;
+                    std::cout << "4. <- Назад" << std::endl;
+                    switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
+                    case 1:
+                        newEmployeeName = check::getProperNameValue("Введите новое имя работника: ", "Неверный ввод");
+                        (*_bonusSystem).editEmployee(employeeId, newEmployeeName);
+                        break;
+                    case 2:
+                        salary = check::getDoubleValue("Введите новую зарплату работника: ", "Неверный ввод");
+                        (*_bonusSystem).editEmployee(employeeId, salary);
+                        break;
+                    case 3:
+                        employee = (*_bonusSystem).getEmployeeById(employeeId);
+                        std::cout << *employee << std::endl;
+
+                        std::cout << "1. Добавить задачу" << std::endl;
+                        std::cout << "2. Пометить задачу выполненной" << std::endl;
+                        std::cout << "3. Удалить задачу" << std::endl;
+                        std::cout << "4. <- Назад" << std::endl;
+
+                        switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
+                        case 1:
+                            if (!showTasks(sort, 1)) {
+                                break;
+                            }
+
+                            taskId = check::getNaturalValue("Введите ID задачи для добавления: ", "Неверный ввод!");
+
+                            (*_bonusSystem).setTaskToEmployee(employeeId, taskId);
+                            break;
+                        case 2:
+                            std::cout << "Невыполненные задачи ( - ) | Помеченные задачи ( * ) | Выполненные задачи ( + )" << std::endl;
+                            std::cout << "Помечать можно только невыполненные задачи!" << std::endl;
+                            taskId = check::getNaturalValue("Введите ID задачи которую хотите пометить: ", "Неверный ввод!");
+                            employee->markTaskCompleted(taskId);
+                            break;
+                        case 3:
+                            std::cout << "Удалить можно только свободную задачу!" << std::endl;
+                            taskId = check::getNaturalValue("Введите ID задачи для удаления: ", "Неверный ввод!");
+
+                            (*_bonusSystem).deleteTaskFromEmployee(employeeId, taskId);
+                            break;
+                        }
+                        break;
+                    }
+                    break;
+                case 3:
+                    if (!showEmployees(sort)) {
+                        break;
+                    }
+
+                    employeeId = check::getNaturalValue("Введите ID работника для удаления: ", "Неверный ввод");
+                    (*_bonusSystem).deleteEmployee(employeeId);
+                    (*_loginSystem).deleteEmployeeOnUsers(employeeId);
+                    break;
+                }
+                break;
+            case 3:
+                system("cls");
+
+                showTasks(sort);
+
+                std::cout << "1. Добавить задачу" << std::endl;
+                std::cout << "2. Изменить задачу" << std::endl;
+                std::cout << "3. Удалить задачу" << std::endl;
+                std::cout << "4. Подтвердить выполнение задачи" << std::endl;
+                std::cout << "5. <- Назад" << std::endl;
+
+                switch (check::getNaturalValueBefore(5, ">>> ", "Неверный ввод!")) {
+                case 1:
+                    std::cout << "Введите текст задания (Enter для конца ввода): ";
+                    std::getline(std::cin, taskText, '\n');
+
+                    std::cout << "1. Добавить задачу за баллы" << std::endl;
+                    std::cout << "2. Добавить задачу за процент от з/п" << std::endl;
                     std::cout << "3. <- Назад" << std::endl;
 
                     switch (check::getNaturalValueBefore(3, ">>> ", "Неверный ввод!")) {
                     case 1:
-                        employeeId = check::getNaturalValue("Введите ID работника для выплаты премии: ", "Неверный ввод");
-                        (*_bonusSystem).payBonuses(employeeId);
+                        points = check::getNaturalValue("Введите количество баллов: ", "Неверный ввод!");
+                        (*_bonusSystem).addTaskByPoint(taskText, points);
                         break;
                     case 2:
-                        (*_bonusSystem).payBonuses();
+                        percents = check::getDoubleValueFromTo(0, 100, "Введите количество процентов: ", "Неверный ввод!");
+                        (*_bonusSystem).addTaskByPercent(taskText, percents);
                         break;
                     }
                     break;
-                case 6:
-                    std::cout << "1. По возрастанию" << std::endl;
-                    std::cout << "2. По убыванию" << std::endl;
-                    std::cout << "3. <- Назад" << std::endl;
+                case 2:
+                    std::cout << "Изменить можно только свободные задачи!" << std::endl;
+                    if (!showTasks(sort, 1)) {
+                        break;
+                    }
 
-                    switch (check::getNaturalValueBefore(3, ">>> ", "Неверный ввод!")) {
-                    case 1:
-                        sort = false;
-                        break;
-                    case 2:
-                        sort = true;
-                        break;
-                    }
-                    break;
-                case 7:
-                    std::cout << "1. Поиск пользователя" << std::endl;
-                    std::cout << "2. Поиск работника" << std::endl;
-                    std::cout << "3. Поиск задачи" << std::endl;
+                    std::cout << "1. Изменить текст задачи" << std::endl;
+                    std::cout << "2. Изменить баллы задачи" << std::endl;
+                    std::cout << "3. Изменить проценты задачи" << std::endl;
                     std::cout << "4. <- Назад" << std::endl;
 
                     switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
                     case 1:
-                        userLogin = check::getWordValue("Введите логин: ", "Неверный ввод!");
-                        searchUser(userLogin);
+                        taskId = check::getNaturalValue("Введите ID задачи для изменения: ", "Неверный ввод!");
+                        std::cout << "Введите новый текст задания (Enter для конца ввода): ";
+                        std::getline(std::cin, taskText, '\n');
+
+                        (*_bonusSystem).editTask(taskId, taskText);
                         break;
                     case 2:
-                        std::cout << "1. Поиск по айди" << std::endl;
-                        std::cout << "2. Поиск по имени" << std::endl;
-                        std::cout << "3. <- Назад" << std::endl;
-                        switch (check::getNaturalValueBefore(3, ">>> ", "Неверный ввод!")) {
-                        case 1:
-                            employeeId = check::getNaturalValue("Введите ID искомого работника: ");
-                            searchEmployee(employeeId, sort);
-                            break;
-                        case 2:
-                            employeeName = check::getProperNameValue("Введите имя искомого работника: ", "Неверный ввод!");
-                            searchEmployee(employeeName, sort);
+                        tasksByPoint = (*_bonusSystem).getFreeTasksByPoint();
+                        if (tasksByPoint.empty()) {
+                            std::cout << "Задач за баллы нет." << std::endl;
                             break;
                         }
+
+                        taskId = check::getNaturalValue("Введите ID задачи по баллам для изменения: ", "Неверный ввод!");
+                        points = check::getNaturalValue("Введите новое количество баллов: ", "Неверный ввод!");
+
+                        (*_bonusSystem).editTask(taskId, points);
                         break;
                     case 3:
-                        std::cout << "1. Поиск по айди" << std::endl;
-                        std::cout << "2. Поиск по количеству баллов" << std::endl;
-                        std::cout << "3. Поиск по количеству процентов" << std::endl;
-                        std::cout << "4. <- Назад" << std::endl;
-                        switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
-                        case 1:
-                            taskId = check::getNaturalValue("Введите ID искомой задачи: ");
-                            searchTask(taskId);
-                            break;
-                        case 2:
-                            points = check::getNaturalValue("Введите количество баллов: ", "Неверный ввод!");
-                            searchTask(points, sort);
-                            break;
-                        case 3:
-                            percents = check::getDoubleValueFromTo(0, 100, "Введите количество процентов: ", "Неверный ввод!");
-                            searchTask(percents, sort);
+                        tasksByPercent = (*_bonusSystem).getFreeTasksByPercent();
+                        if (tasksByPercent.empty()) {
+                            std::cout << "Задач за проценты нет." << std::endl;
                             break;
                         }
+
+                        taskId = check::getNaturalValue("Введите ID задачи по процентам для изменения: ", "Неверный ввод!");
+                        percents = check::getDoubleValueFromTo(0, 100, "Введите новое количество процентов: ", "Неверный ввод!");
+
+                        (*_bonusSystem).editTask(taskId, percents);
                         break;
                     }
                     break;
-                case 8:
-                    return;
+                case 3:
+                    tasksByPoint = (*_bonusSystem).getFreeTasksByPoint();
+                    tasksByPercent = (*_bonusSystem).getFreeTasksByPercent();
+                    if (tasksByPoint.empty() && tasksByPercent.empty()) {
+                        std::cout << "Задач нет." << std::endl;
+                        break;
+                    }
+
+                    taskId = check::getNaturalValue("Введите ID задачи для удаления: ", "Неверный ввод!");
+                    (*_bonusSystem).deleteTask(taskId);
+                    break;
+                case 4:
+                    if (!showEmployeeWithMarkedTask(sort)) {
+                        break;
+                    }
+
+                    employeeId = check::getNaturalValue("Введите ID работника которому выполнить задачу: ");
+                    employee = (*_bonusSystem).getEmployeeById(employeeId);
+                    if (employee == nullptr) {
+                        std::cout << "Работника с таким ID не существует" << std::endl;
+                        break;
+                    }
+                    taskId = check::getNaturalValue("Введите ID задачи которую хотите выполнить: ", "Неверный ввод!");
+                    (*_bonusSystem).setTaskCompleted(taskId);
+
+                    break;
                 }
-                std::cout << "Для продолжения нажмите любую клавишу..." << std::endl;
-                system("pause>nul");
+                break;
+            case 4:
+                std::cout << "Текущая цена балла: 1б. = " << (*_bonusSystem).getPointPrice() << "$" << std::endl;
+
+                std::cout << "1. Установить новую цену балла" << std::endl;
+                std::cout << "2. <- Назад" << std::endl;
+
+                switch (check::getNaturalValueBefore(2, ">>> ", "Неверный ввод!")) {
+                case 1:
+                    (*_bonusSystem).setPointPrice(check::getDoubleValueFromTo(0, 100, "Введите количество $ за балл: ", "Неверный ввод!"));
+                    break;
+                }
+                break;
+            case 5:
+                if (!showEmployees(sort)) {
+                    break;
+                }
+
+                std::cout << "1. Выплатить одному" << std::endl;
+                std::cout << "2. Выплатить всем" << std::endl;
+                std::cout << "3. <- Назад" << std::endl;
+
+                switch (check::getNaturalValueBefore(3, ">>> ", "Неверный ввод!")) {
+                case 1:
+                    employeeId = check::getNaturalValue("Введите ID работника для выплаты премии: ", "Неверный ввод");
+                    (*_bonusSystem).payBonuses(employeeId);
+                    break;
+                case 2:
+                    (*_bonusSystem).payBonuses();
+                    break;
+                }
+                break;
+            case 6:
+                std::cout << "1. По возрастанию" << std::endl;
+                std::cout << "2. По убыванию" << std::endl;
+                std::cout << "3. <- Назад" << std::endl;
+
+                switch (check::getNaturalValueBefore(3, ">>> ", "Неверный ввод!")) {
+                case 1:
+                    sort = false;
+                    break;
+                case 2:
+                    sort = true;
+                    break;
+                }
+                break;
+            case 7:
+                std::cout << "1. Поиск пользователя" << std::endl;
+                std::cout << "2. Поиск работника" << std::endl;
+                std::cout << "3. Поиск задачи" << std::endl;
+                std::cout << "4. <- Назад" << std::endl;
+
+                switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
+                case 1:
+                    userLogin = check::getWordValue("Введите логин: ", "Неверный ввод!");
+                    searchUser(userLogin);
+                    break;
+                case 2:
+                    std::cout << "1. Поиск по айди" << std::endl;
+                    std::cout << "2. Поиск по имени" << std::endl;
+                    std::cout << "3. <- Назад" << std::endl;
+                    switch (check::getNaturalValueBefore(3, ">>> ", "Неверный ввод!")) {
+                    case 1:
+                        employeeId = check::getNaturalValue("Введите ID искомого работника: ");
+                        searchEmployee(employeeId, sort);
+                        break;
+                    case 2:
+                        employeeName = check::getProperNameValue("Введите имя искомого работника: ", "Неверный ввод!");
+                        searchEmployee(employeeName, sort);
+                        break;
+                    }
+                    break;
+                case 3:
+                    std::cout << "1. Поиск по айди" << std::endl;
+                    std::cout << "2. Поиск по количеству баллов" << std::endl;
+                    std::cout << "3. Поиск по количеству процентов" << std::endl;
+                    std::cout << "4. <- Назад" << std::endl;
+                    switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
+                    case 1:
+                        taskId = check::getNaturalValue("Введите ID искомой задачи: ");
+                        searchTask(taskId);
+                        break;
+                    case 2:
+                        points = check::getNaturalValue("Введите количество баллов: ", "Неверный ввод!");
+                        searchTask(points, sort);
+                        break;
+                    case 3:
+                        percents = check::getDoubleValueFromTo(0, 100, "Введите количество процентов: ", "Неверный ввод!");
+                        searchTask(percents, sort);
+                        break;
+                    }
+                    break;
+                }
+                break;
+            case 8:
+                return;
             }
-            break;
-        case User::Role::common:
+            std::cout << "Для продолжения нажмите любую клавишу..." << std::endl;
+            system("pause>nul");
+        }
+        break;
+    case User::Role::common:
+        while (true) {
+            system("cls");
             if (mainUser->_employee.second == nullptr) {
                 std::cout << "К этому аккаунту не привязан работник." << std::endl;
                 std::cout << "Для продолжения нажмите любую клавишу..." << std::endl;
                 system("pause>nul");
                 break;
             }
-            std::cout << "Меню работника -" << mainUser->_employee.second->getName() 
+            employeeId = mainUser->_employee.first;
+            employee = (*_bonusSystem).getEmployeeById(employeeId);
+
+            std::cout << "Меню работника -" << mainUser->_employee.second->getName()
                 << "- <- " << mainUser->_login << std::endl;
 
-            // брать задачи
-            // помечать выполненными
-            // редактировать логин, пароль
-            // поиск задаччи
-            // тип сортировки
-            // посмотрерть баллы и проценты
-            // вывести
-            std::cout << "Just user\n";
+            std::cout << "1. Действия с баллами и процентами" << std::endl;
+            std::cout << "2. Действия с задачами" << std::endl;
+            std::cout << "3. Установить тип сортировки" << std::endl;
+            std::cout << "4. Сменить пароль" << std::endl;
+            std::cout << "5. <- Выйти из -" + mainUser->_login + "-" << std::endl;
+
+            switch (check::getNaturalValueBefore(5, ">>> ", "Неверный ввод!")) {
+            case 1:
+                system("cls");
+                std::cout << "Ваша зарплата: " << employee->getSalary() << "$" << std::endl;
+                std::cout << "Ваши баллы: " << employee->getPoints() << "б. x " 
+                    << (*_bonusSystem).getPointPrice() << "$" << std::endl;
+                std::cout << "Ваши проценты: " << employee->getPercents() << "%" << std::endl;
+                std::cout << "1. Вывести премильные" << std::endl;
+                std::cout << "2. <- Назад" << std::endl;
+
+                switch (check::getNaturalValueBefore(2, ">>> ", "Неверный ввод!")) {
+                case 1:
+                    (*_bonusSystem).payBonuses(employeeId);
+                    break;
+                }
+                break;
+            case 2:
+                system("cls");
+                std::cout << *employee << std::endl;
+
+                std::cout << "1. Взять задачу" << std::endl;
+                std::cout << "2. Пометить задачу выполненной" << std::endl;
+                std::cout << "3. Поиск задачи" << std::endl;
+                std::cout << "4. <- Назад" << std::endl;
+
+                switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
+                case 1:
+                    if (!showTasks(sort, 1)) {
+                        break;
+                    }
+
+                    taskId = check::getNaturalValue("Введите ID задачи для добавления: ", "Неверный ввод!");
+
+                    (*_bonusSystem).setTaskToEmployee(employeeId, taskId);
+                    break;
+                case 2:
+                    std::cout << "Невыполненные задачи ( - ) | Помеченные задачи ( * ) | Выполненные задачи ( + )" << std::endl;
+                    std::cout << "Помечать можно только невыполненные задачи!" << std::endl;
+                    taskId = check::getNaturalValue("Введите ID задачи которую хотите пометить: ", "Неверный ввод!");
+                    employee->markTaskCompleted(taskId);
+                    break;
+                case 3:
+                    std::cout << "1. Поиск по айди" << std::endl;
+                    std::cout << "2. Поиск по количеству баллов" << std::endl;
+                    std::cout << "3. Поиск по количеству процентов" << std::endl;
+                    std::cout << "4. <- Назад" << std::endl;
+                    switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
+                    case 1:
+                        taskId = check::getNaturalValue("Введите ID искомой задачи: ");
+                        searchTask(taskId);
+                        break;
+                    case 2:
+                        points = check::getNaturalValue("Введите количество баллов: ", "Неверный ввод!");
+                        searchTask(points, sort);
+                        break;
+                    case 3:
+                        percents = check::getDoubleValueFromTo(0, 100, "Введите количество процентов: ", "Неверный ввод!");
+                        searchTask(percents, sort);
+                        break;
+                    }
+                    break;
+                }
+                break;
+            case 3:
+                std::cout << "1. По возрастанию" << std::endl;
+                std::cout << "2. По убыванию" << std::endl;
+                std::cout << "3. <- Назад" << std::endl;
+
+                switch (check::getNaturalValueBefore(3, ">>> ", "Неверный ввод!")) {
+                case 1:
+                    sort = false;
+                    break;
+                case 2:
+                    sort = true;
+                    break;
+                }
+                break;
+            case 4:
+                userPassword = check::getPasswordValue("Введите старый пароль (мин. "
+                    + std::to_string(LoginSystem::PASSWORD_MIN_NUMBERS) +
+                    " символов): ", "Неверный ввод!", LoginSystem::PASSWORD_MIN_NUMBERS);
+                newUserPassword = check::getPasswordValue("Введите новый пароль (мин. "
+                    + std::to_string(LoginSystem::PASSWORD_MIN_NUMBERS) +
+                    " символов): ", "Неверный ввод!", LoginSystem::PASSWORD_MIN_NUMBERS);
+                if (mainUser->LogIn(mainUser->_login, userPassword)) {
+                    (*_loginSystem).editUserPassword(mainUser->_login, newUserPassword);
+                    std::cout << "Пароль успешно изменён!" << std::endl;
+                }
+                else {
+                    std::cout << "Неверный старый пароль!" << std::endl;
+                }
+                break;
+            case 5:
+                return;
+            }
 
             std::cout << "Для продолжения нажмите любую клавишу..." << std::endl;
             system("pause>nul");
-            break;
         }
-    }
-    catch (std::exception ex) {
-        std::cout << ex.what();
+        break;
     }
 }
