@@ -74,14 +74,15 @@ void Menu::startMenu() {
 			if (user != nullptr) {
 				userMenu(user);
 			}
+            else {
+                std::cout << "Неправильный логин или пароль!" << std::endl;
+            }
 			user = nullptr;
 			break;
 		case 2:
 			std::cout << "Это консольное приложение \033[33m\"Система расчёта премиальных"
 				<< " по результатам года\"\033[0m\nбыло разработано студентом "
 				<< "\033[36mгр. 024402 \033[35mБеляцким Е.В.\033[0m, 2022 г." << std::endl;
-			std::cout << "Для продолжения нажмите любую клавишу..." << std::endl;
-			system("pause>nul");
 			break;
         case 3:
             if (check::getCharValueFromString("yn", "Вы уверены, что хотите это сделать? Все данные будут потеряны! (y/n)\n>>> ",
@@ -94,9 +95,9 @@ void Menu::startMenu() {
             writeBonusSystem(bonusSystem);
             writeLoginSystem(loginSystem);
 			return;
-		default:
-			break;
 		}
+        std::cout << "Для продолжения нажмите любую клавишу..." << std::endl;
+        system("pause>nul");
 	}
 }
 

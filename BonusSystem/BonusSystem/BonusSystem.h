@@ -25,7 +25,7 @@ private:
 	std::map<int, std::shared_ptr<Task>> _completedTasks;
 
 	std::map<int, std::shared_ptr<Employee<std::string>>> _employees;
-	std::map<int, int> _taskID_employeeID;	
+	std::map<int, int> _taskID_employeeID;
 public:
 	static std::shared_ptr<BonusSystem> getInstance();
 	static std::shared_ptr<BonusSystem> resetToDefault();

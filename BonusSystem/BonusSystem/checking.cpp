@@ -47,9 +47,8 @@ bool check::isLetterValue(std::string value) {
 }
 bool check::isPasswordValue(std::string value, int symbolCount, int uppercaseLetterCount, 
 	int lowercaseLetterCount, int numberCount, int specialCharacterCount, int symbolsRepeats) {
-	std::ostringstream os;
 
-	std::string flags = "1111"; // ЗАМЕНИТЬ НА БИТОВОЕ ПОЛЕ КОГДА БУДЕТ ВРЕМЯ (Или как функция open у файловых потоков, которая принимает ios::in и т.д.)
+	std::string flags = "1111";
 
 	if (uppercaseLetterCount < 0) {
 		flags[0] = '0';
