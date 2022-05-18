@@ -144,6 +144,8 @@
     <ClCompile Include="LoginSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="SourceBonusSystem.cpp" />
+    <ClCompile Include="SourceOfBonuses.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskByPoint.cpp" />
     <ClCompile Include="TaskByPercent.cpp" />
@@ -155,6 +157,8 @@
     <ClInclude Include="Employee.h" />
     <ClInclude Include="LoginSystem.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="SourceBonusSystem.h" />
+    <ClInclude Include="SourceOfBonuses.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskByPoint.h" />
     <ClInclude Include="TaskByPercent.h" />
@@ -164,6 +168,7 @@
     <None Include="BonusSytem.dat" />
     <None Include="LoginSytem.dat" />
     <None Include="PaidBonuses.dat" />
+    <None Include="SourceBonusSystem.dat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,6 +15,8 @@ class BonusSystem {
 private:
 	static std::shared_ptr<BonusSystem> _bonusSystem;
 
+	const double tax = 13; // удержание НДФЛ
+
 	int TaskID = 1;
 	int EmployeeID = 1;
 	double PointPrice = 0;

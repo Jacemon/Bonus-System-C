@@ -1,11 +1,17 @@
 #pragma once
 #include "LoginSystem.h"
+#include "SourceBonusSystem.h"
 #include "checking.h"
 
 #include <string>
 #include <memory>
 
 class Menu {
+private:
+	const std::string LoginSystemFileName = "LoginSytem";
+	const std::string BonusSystemFileName = "BonusSytem";
+	const std::string SourceBonusSystemFileName = "SourceBonusSystem";
+	const std::string Extension = ".dat";
 public:
 	void startMenu();
 
@@ -24,6 +30,8 @@ public:
 
 	void userMenu(std::shared_ptr<User>);
 
+	void writeSourceBonusSystem(std::shared_ptr<SourceBonusSystem>);
+	void readSourceBonusSystem(std::shared_ptr<SourceBonusSystem>);
 	void writeLoginSystem(std::shared_ptr<LoginSystem>);
 	void readLoginSystem(std::shared_ptr<LoginSystem>);
 	void writeBonusSystem(std::shared_ptr<BonusSystem>);

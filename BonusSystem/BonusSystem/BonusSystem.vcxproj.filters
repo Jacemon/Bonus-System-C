@@ -42,6 +42,12 @@
     <ClCompile Include="TaskByPercent.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="SourceOfBonuses.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceBonusSystem.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Employee.h">
@@ -71,6 +77,12 @@
     <ClInclude Include="TaskByPercent.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="SourceOfBonuses.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceBonusSystem.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PaidBonuses.dat">
@@ -80,6 +92,9 @@
       <Filter>Файлы ресурсов</Filter>
     </None>
     <None Include="BonusSytem.dat">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="SourceBonusSystem.dat">
       <Filter>Файлы ресурсов</Filter>
     </None>
   </ItemGroup>

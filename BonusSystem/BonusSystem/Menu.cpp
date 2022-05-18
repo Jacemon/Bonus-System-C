@@ -1,29 +1,43 @@
 #include "Menu.h"
 
+void Menu::writeSourceBonusSystem(std::shared_ptr<SourceBonusSystem> sourceBonusSystem) {
+    std::ofstream fout;
+    fout.open(SourceBonusSystemFileName + Extension, std::ios::binary);
+    fout << *sourceBonusSystem;
+    fout.close();
+}
+
+void Menu::readSourceBonusSystem(std::shared_ptr<SourceBonusSystem> sourceBonusSystem) {
+    std::ifstream fin;
+    fin.open(SourceBonusSystemFileName + Extension, std::ios::binary);
+    fin >> *sourceBonusSystem;
+    fin.close();
+}
+
 void Menu::writeLoginSystem(std::shared_ptr<LoginSystem> loginSystem) {
     std::ofstream fout;
-    fout.open("LoginSytem.dat", std::ios::binary);
+    fout.open(LoginSystemFileName + Extension, std::ios::binary);
     fout << *loginSystem;
     fout.close();
 }
 
 void Menu::readLoginSystem(std::shared_ptr<LoginSystem> loginSystem) {
     std::ifstream fin;
-    fin.open("LoginSytem.dat", std::ios::binary);
+    fin.open(LoginSystemFileName + Extension, std::ios::binary);
     fin >> *loginSystem;
     fin.close();
 }
 
 void Menu::writeBonusSystem(std::shared_ptr<BonusSystem> bonusSystem) {
     std::ofstream fout;
-    fout.open("BonusSytem.dat", std::ios::binary);
+    fout.open(BonusSystemFileName + Extension, std::ios::binary);
     fout << *bonusSystem;
     fout.close();
 }
 
 void Menu::readBonusSystem(std::shared_ptr<BonusSystem> bonusSystem) {
     std::ifstream fin;
-    fin.open("BonusSytem.dat", std::ios::binary);
+    fin.open(BonusSystemFileName + Extension, std::ios::binary);
     try {
         fin >> *bonusSystem;
     }
@@ -38,6 +52,7 @@ void Menu::startMenu() {
 
 	std::shared_ptr<LoginSystem> loginSystem = LoginSystem::getInstance();
 	std::shared_ptr<BonusSystem> bonusSystem = BonusSystem::getInstance();
+    std::shared_ptr<SourceBonusSystem> sourceBonusSystem = SourceBonusSystem::getInstance();
 	std::shared_ptr<User> user;
 	std::string login;
 	std::string password;
@@ -45,6 +60,7 @@ void Menu::startMenu() {
     try {
         readBonusSystem(bonusSystem);
         readLoginSystem(loginSystem);
+        readSourceBonusSystem(sourceBonusSystem);
     }
     catch (std::string exc) {
         std::cout << exc << std::endl;
@@ -52,6 +68,7 @@ void Menu::startMenu() {
             "Неверный ввод!") == 'y') {
             loginSystem = LoginSystem::resetToDefault();
             bonusSystem = BonusSystem::resetToDefault();
+            sourceBonusSystem = SourceBonusSystem::getInstance();
         }
         else {
             return;
@@ -94,6 +111,7 @@ void Menu::startMenu() {
 		case 4:
             writeBonusSystem(bonusSystem);
             writeLoginSystem(loginSystem);
+            writeSourceBonusSystem(sourceBonusSystem);
 			return;
 		}
         std::cout << "Для продолжения нажмите любую клавишу..." << std::endl;

@@ -1,4 +1,5 @@
 #include "BonusSystem.h"
+#include "SourceBonusSystem.h"
 
 #include <fstream>
 
@@ -266,18 +267,26 @@ void BonusSystem::payBonuses(int employeeId) {
     if (employee == nullptr) {
         return;
     }
-
+    std::shared_ptr<SourceBonusSystem> sourceBonusSystem = SourceBonusSystem::getInstance();
+    double bonus = (employee->getPoints() * PointPrice + employee->getPercents()
+        * employee->getSalary() / 100.) * (100 - tax) / 100;
+    if (bonus == 0) {
+        std::cout << "У работника нет премий!" << std::endl;
+        return;
+    }
+    if (!(*sourceBonusSystem).takeMoney(bonus)) {
+        std::cout << "У источников премирования не достаточно денег для выплаты!" << std::endl;
+        return;
+    }
     std::cout << employee->getName() << " " << employee->getPoints() << "б. * "
-        << PointPrice << " + " << employee->getPercents() << "% * " << employee->getSalary() 
-        << " = " << employee->getPoints() * PointPrice + employee->getPercents() 
-        * employee->getSalary() / 100. << "$" << std::endl;
+        << PointPrice << " + " << employee->getPercents() << "% * " << employee->getSalary()
+        << " = " << bonus << "$" << " (НДФЛ - " << tax << "%)" << std::endl;
 
     std::ofstream fout;
     fout.open("PaidBonuses.dat", std::ios::app, std::ios::binary);
     fout << employee->getName() << " " << employee->getPoints() << "б. * "
         << PointPrice << " + " << employee->getPercents() << "% * " << employee->getSalary()
-        << " = " << employee->getPoints() * PointPrice + employee->getPercents()
-        * employee->getSalary() / 100. << "$" << std::endl;
+        << " = " << bonus << "$" << " (НДФЛ - " << tax << "%)" << std::endl;
     fout.close();
 
     employee->setPoints(0);
