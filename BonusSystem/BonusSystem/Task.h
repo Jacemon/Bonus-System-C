@@ -19,7 +19,6 @@ public:
 	std::string _taskText;
 
 	Task();
-	Task(std::string, TaskType);
-	virtual void setTaskText(std::string) = 0;
+	Task(std::string text, TaskType type);
+	virtual void setTaskText(std::string text) = 0;
 };
-

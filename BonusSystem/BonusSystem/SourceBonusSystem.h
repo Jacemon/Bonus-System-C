@@ -14,9 +14,8 @@ public:
 	static std::shared_ptr<SourceBonusSystem> getInstance();
 	static std::shared_ptr<SourceBonusSystem> resetToDefault();
 	
-	double takeMoney(double);
+	double takeMoney(double money);
 
-	friend std::ofstream& operator<<(std::ofstream&, SourceBonusSystem);
-	friend std::ifstream& operator>>(std::ifstream&, SourceBonusSystem&);
+	friend std::ofstream& operator<<(std::ofstream& ofs, SourceBonusSystem sbs);
+	friend std::ifstream& operator>>(std::ifstream& ifs, SourceBonusSystem& sbs);
 };
-

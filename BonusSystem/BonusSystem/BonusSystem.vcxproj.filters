@@ -97,5 +97,6 @@
     <None Include="SourceBonusSystem.dat">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

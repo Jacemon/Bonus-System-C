@@ -21,19 +21,22 @@ public:
 	bool showEmployeeTasks(bool sort, int employeeId);
 	bool showEmployeeWithMarkedTask(bool sort);
 
-	bool searchUser(std::string);
-	bool searchEmployee(std::string, bool);
-	bool searchEmployee(int, bool);
-	bool searchTask(int);
-	bool searchTask(int, bool);
-	bool searchTask(double, bool);
+	bool searchUser(std::string login);
+	bool searchEmployee(std::string name, bool sort);
+	bool searchEmployee(int id, bool sort);
+	bool searchTask(int id);
+	bool searchTask(int points, bool sort);
+	bool searchTask(double percents, bool sort);
 
-	void userMenu(std::shared_ptr<User>);
+	bool searchTaskWithBorder(double percents, bool sort, bool flag);
+	bool searchTaskWithBorder(int points, bool sort, bool flag);
 
-	void writeSourceBonusSystem(std::shared_ptr<SourceBonusSystem>);
-	void readSourceBonusSystem(std::shared_ptr<SourceBonusSystem>);
-	void writeLoginSystem(std::shared_ptr<LoginSystem>);
-	void readLoginSystem(std::shared_ptr<LoginSystem>);
-	void writeBonusSystem(std::shared_ptr<BonusSystem>);
-	void readBonusSystem(std::shared_ptr<BonusSystem>);
+	void userMenu(std::shared_ptr<User> user);
+
+	void writeSourceBonusSystem(std::shared_ptr<SourceBonusSystem> sbs);
+	void readSourceBonusSystem(std::shared_ptr<SourceBonusSystem> sbs);
+	void writeLoginSystem(std::shared_ptr<LoginSystem> ls);
+	void readLoginSystem(std::shared_ptr<LoginSystem> ls);
+	void writeBonusSystem(std::shared_ptr<BonusSystem> bs);
+	void readBonusSystem(std::shared_ptr<BonusSystem> bs);
 };

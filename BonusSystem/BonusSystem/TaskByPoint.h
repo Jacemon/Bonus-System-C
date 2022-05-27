@@ -6,14 +6,14 @@ private:
 	int _points;
 public:
 	TaskByPoint();
-	TaskByPoint(std::string, int);
+	TaskByPoint(std::string text, int points);
 
 	int getPoints();
-	void setPoints(int);
+	void setPoints(int points);
 
-	friend std::ostream& operator<<(std::ostream&, TaskByPoint);
-	friend std::ofstream& operator<<(std::ofstream&, TaskByPoint);
-	friend std::ifstream& operator>>(std::ifstream&, TaskByPoint&);
+	friend std::ostream& operator<<(std::ostream& os, TaskByPoint task);
+	friend std::ofstream& operator<<(std::ofstream& ofs, TaskByPoint task);
+	friend std::ifstream& operator>>(std::ifstream& ifs, TaskByPoint& task);
 
-	void setTaskText(std::string);
+	void setTaskText(std::string text);
 };

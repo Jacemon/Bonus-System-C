@@ -12,6 +12,9 @@ public:
 	std::string getName();
 
 	double takeMoney(double);
-	friend std::ofstream& operator<<(std::ofstream&, SourceOfBonuses);
-	friend std::ifstream& operator>>(std::ifstream&, SourceOfBonuses&);
+	friend std::ofstream& operator<<(std::ofstream& ofs, SourceOfBonuses sb);
+	friend std::ifstream& operator>>(std::ifstream& ifs, SourceOfBonuses& sb);
+
+	double operator+(SourceOfBonuses sb);
+	double operator+(double money);
 };

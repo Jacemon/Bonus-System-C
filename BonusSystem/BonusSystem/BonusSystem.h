@@ -15,7 +15,7 @@ class BonusSystem {
 private:
 	static std::shared_ptr<BonusSystem> _bonusSystem;
 
-	const double tax = 13; // удержание НДФЛ
+	const double TAX = 13; // удержание НДФЛ
 
 	int TaskID = 1;
 	int EmployeeID = 1;
@@ -32,24 +32,24 @@ public:
 	static std::shared_ptr<BonusSystem> getInstance();
 	static std::shared_ptr<BonusSystem> resetToDefault();
 	
-	void setPointPrice(double);
+	void setPointPrice(double pointPrice);
 	double getPointPrice();
 
-	int addEmployee(std::string, double);
-	void deleteEmployee(int);
-	void editEmployee(int, std::string);
-	void editEmployee(int, double);
+	int addEmployee(std::string name, double salary);
+	void deleteEmployee(int id);
+	void editEmployee(int id, std::string name);
+	void editEmployee(int id, double salary);
 
-	std::shared_ptr<Employee<std::string>> getEmployeeById(int);
+	std::shared_ptr<Employee<std::string>> getEmployeeById(int id);
 	std::map<int, Employee<std::string>> getEmployees();
 
-	void addTaskByPoint(std::string, int);
-	void addTaskByPercent(std::string, double);
-	void deleteTask(int);
-	void editTask(int, std::string);
-	void editTask(int, double);
-	void editTask(int, int);
-	void setTaskCompleted(int);
+	void addTaskByPoint(std::string text, int points);
+	void addTaskByPercent(std::string text, double percents);
+	void deleteTask(int id);
+	void editTask(int id, std::string text);
+	void editTask(int id, double percents);
+	void editTask(int id, int points);
+	void setTaskCompleted(int id);
 
 	std::map<int, TaskByPoint> getFreeTasksByPoint();
 	std::map<int, TaskByPercent> getFreeTasksByPercent();
@@ -58,14 +58,13 @@ public:
 	std::map<int, TaskByPoint> getCompletedTasksByPoint();
 	std::map<int, TaskByPercent> getCompletedTasksByPercent();
 
-	void setTaskToEmployee(int, int);
-	void deleteTaskFromEmployee(int, int);
-	void editTaskFromEmployee(int, int, int);
+	void setTaskToEmployee(int employeeId, int taskId);
+	void deleteTaskFromEmployee(int employeeId, int taskId);
+	void editTaskFromEmployee(int employeeId, int taskId, int newTaskId);
 
 	void payBonuses();
-	void payBonuses(int);
+	void payBonuses(int employeeId);
 
-	friend std::ofstream& operator<<(std::ofstream&, BonusSystem);
-	friend std::ifstream& operator>>(std::ifstream&, BonusSystem&);
+	friend std::ofstream& operator<<(std::ofstream& ofs, BonusSystem bs);
+	friend std::ifstream& operator>>(std::ifstream& ifs, BonusSystem& bs);
 };
-

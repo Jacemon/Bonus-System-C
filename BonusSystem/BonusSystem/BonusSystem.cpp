@@ -268,8 +268,9 @@ void BonusSystem::payBonuses(int employeeId) {
         return;
     }
     std::shared_ptr<SourceBonusSystem> sourceBonusSystem = SourceBonusSystem::getInstance();
-    double bonus = (employee->getPoints() * PointPrice + employee->getPercents()
-        * employee->getSalary() / 100.) * (100 - tax) / 100;
+    double bonus = employee->getPoints() * PointPrice + employee->getPercents()
+        * employee->getSalary() / 100.;
+    double total = bonus * (100 - TAX) / 100.;
     if (bonus == 0) {
         std::cout << "Ó ðàáîòíèêà íåò ïðåìèé!" << std::endl;
         return;
@@ -280,13 +281,13 @@ void BonusSystem::payBonuses(int employeeId) {
     }
     std::cout << employee->getName() << " " << employee->getPoints() << "á. * "
         << PointPrice << " + " << employee->getPercents() << "% * " << employee->getSalary()
-        << " = " << bonus << "$" << " (ÍÄÔË - " << tax << "%)" << std::endl;
+        << " = " << bonus << "$ -> " << total << "$ (ÍÄÔË - " << TAX << "%)" << std::endl;
 
     std::ofstream fout;
     fout.open("PaidBonuses.dat", std::ios::app, std::ios::binary);
     fout << employee->getName() << " " << employee->getPoints() << "á. * "
         << PointPrice << " + " << employee->getPercents() << "% * " << employee->getSalary()
-        << " = " << bonus << "$" << " (ÍÄÔË - " << tax << "%)" << std::endl;
+        << " = " << bonus << "$ -> " << total << "$ (ÍÄÔË - " << TAX << "%)" << std::endl;
     fout.close();
 
     employee->setPoints(0);
@@ -340,17 +341,17 @@ std::ifstream& operator>>(std::ifstream& ifs, BonusSystem& bonusSystem) {
             >> freeTaskSize >> holdedTaskSize >> completedTaskSize >> employeesSize
             >> taskIDEmployeeIdSize >> bonusSystem.PointPrice;
         int taskId, employeeId;
-        TaskByPoint taskByPoint;
-        TaskByPercent taskByPercent;
-        Employee<std::string> employee;
+
         for (int i = 0; i < allTaskSize; i++) {
             ifs >> taskType;
             ifs.get();
             if (static_cast<Task::TaskType>(taskType) == Task::TaskType::byPoint) {
+                TaskByPoint taskByPoint;
                 ifs >> taskByPoint >> taskId;
                 bonusSystem._allTasks.insert(std::pair<int, std::shared_ptr<Task>>(taskId, new TaskByPoint(taskByPoint)));
             }
             else if (static_cast<Task::TaskType>(taskType) == Task::TaskType::byPercent) {
+                TaskByPercent taskByPercent;
                 ifs >> taskByPercent >> taskId;
                 bonusSystem._allTasks.insert(std::pair<int, std::shared_ptr<Task>>(taskId, new TaskByPercent(taskByPercent)));
             }
@@ -381,6 +382,7 @@ std::ifstream& operator>>(std::ifstream& ifs, BonusSystem& bonusSystem) {
             bonusSystem._taskID_employeeID.insert(std::pair<int, int>(taskId, employeeId));
         }
         for (int i = 0; i < employeesSize; i++) {
+            Employee<std::string> employee;
             ifs >> employeeId;
             ifs >> employee;
             bonusSystem._employees.insert(std::pair<int, std::shared_ptr<Employee<std::string>>>

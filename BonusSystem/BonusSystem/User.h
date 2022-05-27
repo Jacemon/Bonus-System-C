@@ -7,7 +7,6 @@ private:
 	enum class Role {
 		admin,
 		common,
-		// guest
 	};
 	Role _role;
 
@@ -16,7 +15,7 @@ private:
 
 	std::pair<int, std::shared_ptr<Employee<std::string>>> _employee;
 
-	bool LogIn(std::string, std::string);
+	bool LogIn(std::string login, std::string password);
 
 	friend class LoginSystem;
 	friend class Menu;
@@ -27,7 +26,7 @@ public:
 	bool operator< (const User& other) const;
 	bool operator> (const User& other) const;
 
-	friend std::ostream& operator<<(std::ostream&, User);
-	friend std::ofstream& operator<<(std::ofstream&, User);
-	friend std::ifstream& operator>>(std::ifstream&, User&);
+	friend std::ostream& operator<<(std::ostream& os, User user);
+	friend std::ofstream& operator<<(std::ofstream& ofs, User user);
+	friend std::ifstream& operator>>(std::ifstream& ifs, User& user);
 };

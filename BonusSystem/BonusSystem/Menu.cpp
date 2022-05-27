@@ -106,6 +106,7 @@ void Menu::startMenu() {
                 "Неверный ввод!") == 'y') {
                 loginSystem = LoginSystem::resetToDefault();
                 bonusSystem = BonusSystem::resetToDefault();
+                sourceBonusSystem = SourceBonusSystem::resetToDefault();
             }
             break;
 		case 4:
@@ -185,12 +186,12 @@ bool Menu::showTasks(bool sort, int taskType) {
                 std::cout << "-По баллам-" << std::endl;
                 if (sort) {
                     for (auto it = tasksByPoint.begin(); it != tasksByPoint.end(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
                 else {
                     for (auto it = tasksByPoint.rbegin(); it != tasksByPoint.rend(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
             }
@@ -198,12 +199,12 @@ bool Menu::showTasks(bool sort, int taskType) {
                 std::cout << "-По процентам-" << std::endl;
                 if (sort) {
                     for (auto it = tasksByPercent.begin(); it != tasksByPercent.end(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
                 else {
                     for (auto it = tasksByPercent.rbegin(); it != tasksByPercent.rend(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
             }
@@ -221,12 +222,12 @@ bool Menu::showTasks(bool sort, int taskType) {
                 std::cout << "-По баллам-" << std::endl;
                 if (sort) {
                     for (auto it = tasksByPoint.begin(); it != tasksByPoint.end(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
                 else {
                     for (auto it = tasksByPoint.rbegin(); it != tasksByPoint.rend(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
             }
@@ -234,12 +235,12 @@ bool Menu::showTasks(bool sort, int taskType) {
                 std::cout << "-По процентам-" << std::endl;
                 if (sort) {
                     for (auto it = tasksByPercent.begin(); it != tasksByPercent.end(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
                 else {
                     for (auto it = tasksByPercent.rbegin(); it != tasksByPercent.rend(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
             }
@@ -257,12 +258,12 @@ bool Menu::showTasks(bool sort, int taskType) {
                 std::cout << "-По баллам-" << std::endl;
                 if (sort) {
                     for (auto it = tasksByPoint.begin(); it != tasksByPoint.end(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
                 else {
                     for (auto it = tasksByPoint.rbegin(); it != tasksByPoint.rend(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
             }
@@ -270,12 +271,12 @@ bool Menu::showTasks(bool sort, int taskType) {
                 std::cout << "-По процентам-" << std::endl;
                 if (sort) {
                     for (auto it = tasksByPercent.begin(); it != tasksByPercent.end(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
                 else {
                     for (auto it = tasksByPercent.rbegin(); it != tasksByPercent.rend(); it++) {
-                        std::cout << it->first << " - " << it->second << std::endl;
+                        std::cout << " " << it->first << " - " << it->second << std::endl;
                     }
                 }
             }
@@ -663,11 +664,11 @@ bool Menu::searchTask(double percent, bool sort) {
             return false;
         });
     if (itTskByPct == tasksByPercent.end()) {
-        std::cout << "Задачи по баллам не найдено." << std::endl;
+        std::cout << "Задачи по процентам не найдено." << std::endl;
         return false;
     }
 
-    std::cout << "-<Задачи по баллам>-" << std::endl;
+    std::cout << "-<Задачи по процентам>-" << std::endl;
     if (sort) {
         for (itTskByPct = tasksByPercent.begin(); itTskByPct != tasksByPercent.end(); itTskByPct++) {
             if (itTskByPct->second.getPercent() == percent) {
@@ -679,6 +680,139 @@ bool Menu::searchTask(double percent, bool sort) {
         for (auto itTskByPct = tasksByPercent.rbegin(); itTskByPct != tasksByPercent.rend(); itTskByPct++) {
             if (itTskByPct->second.getPercent() == percent) {
                 std::cout << itTskByPct->first << " - " << itTskByPct->second << std::endl;
+            }
+        }
+    }
+    return true;
+}
+
+bool Menu::searchTaskWithBorder(int points, bool sort, bool flag) {
+    std::shared_ptr<BonusSystem> _bonusSystem = BonusSystem::getInstance();
+    auto tasksByPoint = (*_bonusSystem).getFreeTasksByPoint();
+    if (tasksByPoint.empty()) {
+        std::cout << "Задач по баллам нет." << std::endl;
+    }
+
+    if (flag) {
+        auto itTskByPnt = std::find_if(tasksByPoint.begin(), tasksByPoint.end(),
+            [&](std::pair<int, TaskByPoint> pair) -> bool {
+                if (pair.second.getPoints() > points) {
+                    return true;
+                }
+                return false;
+            });
+        if (itTskByPnt == tasksByPoint.end()) {
+            std::cout << "Задач по баллам больше не найдено." << std::endl;
+            return false;
+        }
+        std::cout << "-<Задачи по баллам>-" << std::endl;
+        if (sort) {
+            for (itTskByPnt = tasksByPoint.begin(); itTskByPnt != tasksByPoint.end(); itTskByPnt++) {
+                if (itTskByPnt->second.getPoints() > points) {
+                    std::cout << itTskByPnt->first << " - " << itTskByPnt->second << std::endl;
+                }
+            }
+        }
+        else {
+            for (auto itTskByPnt = tasksByPoint.rbegin(); itTskByPnt != tasksByPoint.rend(); itTskByPnt++) {
+                if (itTskByPnt->second.getPoints() > points) {
+                    std::cout << itTskByPnt->first << " - " << itTskByPnt->second << std::endl;
+                }
+            }
+        }
+    }
+    else {
+        auto itTskByPnt = std::find_if(tasksByPoint.begin(), tasksByPoint.end(),
+            [&](std::pair<int, TaskByPoint> pair) -> bool {
+                if (pair.second.getPoints() < points) {
+                    return true;
+                }
+                return false;
+            });
+        if (itTskByPnt == tasksByPoint.end()) {
+            std::cout << "Задач по баллам меньше не найдено." << std::endl;
+            return false;
+        }
+        std::cout << "-<Задачи по баллам>-" << std::endl;
+        if (sort) {
+            for (itTskByPnt = tasksByPoint.begin(); itTskByPnt != tasksByPoint.end(); itTskByPnt++) {
+                if (itTskByPnt->second.getPoints() < points) {
+                    std::cout << itTskByPnt->first << " - " << itTskByPnt->second << std::endl;
+                }
+            }
+        }
+        else {
+            for (auto itTskByPnt = tasksByPoint.rbegin(); itTskByPnt != tasksByPoint.rend(); itTskByPnt++) {
+                if (itTskByPnt->second.getPoints() < points) {
+                    std::cout << itTskByPnt->first << " - " << itTskByPnt->second << std::endl;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+bool Menu::searchTaskWithBorder(double percent, bool sort, bool flag) {
+    std::shared_ptr<BonusSystem> _bonusSystem = BonusSystem::getInstance();
+    auto tasksByPercent = (*_bonusSystem).getFreeTasksByPercent();
+    if (tasksByPercent.empty()) {
+        std::cout << "Задач по процентам нет." << std::endl;
+    }
+    if (flag) {
+        auto itTskByPct = std::find_if(tasksByPercent.begin(), tasksByPercent.end(),
+            [&](std::pair<int, TaskByPercent> pair) -> bool {
+                if (pair.second.getPercent() > percent) {
+                    return true;
+                }
+                return false;
+            });
+        if (itTskByPct == tasksByPercent.end()) {
+            std::cout << "Задачи по процентам больше не найдено." << std::endl;
+            return false;
+        }
+
+        std::cout << "-<Задачи по процентам>-" << std::endl;
+        if (sort) {
+            for (itTskByPct = tasksByPercent.begin(); itTskByPct != tasksByPercent.end(); itTskByPct++) {
+                if (itTskByPct->second.getPercent() > percent) {
+                    std::cout << itTskByPct->first << " - " << itTskByPct->second << std::endl;
+                }
+            }
+        }
+        else {
+            for (auto itTskByPct = tasksByPercent.rbegin(); itTskByPct != tasksByPercent.rend(); itTskByPct++) {
+                if (itTskByPct->second.getPercent() > percent) {
+                    std::cout << itTskByPct->first << " - " << itTskByPct->second << std::endl;
+                }
+            }
+        }
+    }
+    else {
+        auto itTskByPct = std::find_if(tasksByPercent.begin(), tasksByPercent.end(),
+            [&](std::pair<int, TaskByPercent> pair) -> bool {
+                if (pair.second.getPercent() < percent) {
+                    return true;
+                }
+                return false;
+            });
+        if (itTskByPct == tasksByPercent.end()) {
+            std::cout << "Задачи по процентам меньше не найдено." << std::endl;
+            return false;
+        }
+
+        std::cout << "-<Задачи по процентам>-" << std::endl;
+        if (sort) {
+            for (itTskByPct = tasksByPercent.begin(); itTskByPct != tasksByPercent.end(); itTskByPct++) {
+                if (itTskByPct->second.getPercent() < percent) {
+                    std::cout << itTskByPct->first << " - " << itTskByPct->second << std::endl;
+                }
+            }
+        }
+        else {
+            for (auto itTskByPct = tasksByPercent.rbegin(); itTskByPct != tasksByPercent.rend(); itTskByPct++) {
+                if (itTskByPct->second.getPercent() < percent) {
+                    std::cout << itTskByPct->first << " - " << itTskByPct->second << std::endl;
+                }
             }
         }
     }
@@ -698,6 +832,7 @@ void Menu::userMenu(std::shared_ptr<User> mainUser) {
     double percents;
     double salary;
     bool sort = true;
+    bool flag = true;
 
     std::shared_ptr<User> user;
     std::shared_ptr<Employee<std::string>> employee;
@@ -716,9 +851,10 @@ void Menu::userMenu(std::shared_ptr<User> mainUser) {
             std::cout << "5. Выплатить премии" << std::endl;
             std::cout << "6. Установить тип сортировки" << std::endl;
             std::cout << "7. Поиск" << std::endl;
-            std::cout << "8. <- Выйти из -" + mainUser->_login + "-" << std::endl;
+            std::cout << "8. Фильтрация" << std::endl;
+            std::cout << "9. <- Выйти из -" + mainUser->_login + "-" << std::endl;
 
-            switch (check::getNaturalValueBefore(8, ">>> ", "Неверный ввод!")) {
+            switch (check::getNaturalValueBefore(9, ">>> ", "Неверный ввод!")) {
             case 1:
                 system("cls");
 
@@ -752,7 +888,7 @@ void Menu::userMenu(std::shared_ptr<User> mainUser) {
 
                     std::cout << "1. Изменить логин" << std::endl;
                     std::cout << "2. Изменить пароль" << std::endl;
-                    std::cout << "3. Назначить работника" << std::endl;
+                    std::cout << "3. Изменить работника" << std::endl;
                     std::cout << "4. <- Назад" << std::endl;
                     switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
                     case 1:
@@ -768,17 +904,26 @@ void Menu::userMenu(std::shared_ptr<User> mainUser) {
                         (*_loginSystem).editUserPassword(userLogin, newUserPassword);
                         break;
                     case 3:
-                        if (!showEmployees(sort)) {
+                        std::cout << "1. Привязать работника" << std::endl;
+                        std::cout << "2. Отвязать работника" << std::endl;
+                        std::cout << "3. <- Назад" << std::endl;
+                        switch (check::getNaturalValueBefore(3, ">>> ", "Неверный ввод!")) {
+                        case 1:
+                            if (!showEmployees(sort)) {
+                                break;
+                            }
+                            employeeId = check::getNaturalValue("Введите ID нового работника: ", "Неверный ввод!");
+                            employee = (*_bonusSystem).getEmployeeById(employeeId);
+                            if (employee == nullptr) {
+                                std::cout << "Работника с таким ID не существует" << std::endl;
+                                break;
+                            }
+                            (*_loginSystem).setEmployeeToUser(_bonusSystem, userLogin, employeeId);
+                            break;
+                        case 2:
+                            (*_loginSystem).deleteEmployeeOnUsers(user->_employee.first);
                             break;
                         }
-
-                        employeeId = check::getNaturalValue("Введите ID нового работника: ", "Неверный ввод!");
-                        employee = (*_bonusSystem).getEmployeeById(employeeId);
-                        if (employee == nullptr) {
-                            std::cout << "Работника с таким ID не существует" << std::endl;
-                            break;
-                        }
-                        (*_loginSystem).setEmployeeToUser(_bonusSystem, userLogin, employeeId);
                         break;
                     }
                     break;
@@ -1073,6 +1218,23 @@ void Menu::userMenu(std::shared_ptr<User> mainUser) {
                 }
                 break;
             case 8:
+                flag = check::getCharValueFromString("бм", "Отфильтровать с меньшим значением или с большим? (б/м): ", "Неверный ввод!") == 'б' ? true : false;
+                std::cout << "1. Фильтрация по количеству баллов" << std::endl;
+                std::cout << "2. Фильтрация по количеству процентов" << std::endl;
+                std::cout << "3. <- Назад" << std::endl;
+
+                switch (check::getNaturalValueBefore(3, ">>> ", "Неверный ввод!")) {
+                case 1:
+                    points = check::getNaturalValue("Введите количество баллов: ", "Неверный ввод!");
+                    searchTaskWithBorder(points, sort, flag);
+                    break;
+                case 2:
+                    percents = check::getDoubleValueFromTo(0, 100, "Введите количество процентов: ", "Неверный ввод!");
+                    searchTaskWithBorder(percents, sort, flag);
+                    break;
+                }
+                break;
+            case 9:
                 return;
             }
             std::cout << "Для продолжения нажмите любую клавишу..." << std::endl;
@@ -1123,9 +1285,10 @@ void Menu::userMenu(std::shared_ptr<User> mainUser) {
                 std::cout << "1. Взять задачу" << std::endl;
                 std::cout << "2. Пометить задачу выполненной" << std::endl;
                 std::cout << "3. Поиск задачи" << std::endl;
-                std::cout << "4. <- Назад" << std::endl;
+                std::cout << "4. Фильтация задач" << std::endl;
+                std::cout << "5. <- Назад" << std::endl;
 
-                switch (check::getNaturalValueBefore(4, ">>> ", "Неверный ввод!")) {
+                switch (check::getNaturalValueBefore(5, ">>> ", "Неверный ввод!")) {
                 case 1:
                     if (!showTasks(sort, 1)) {
                         break;
@@ -1158,6 +1321,23 @@ void Menu::userMenu(std::shared_ptr<User> mainUser) {
                     case 3:
                         percents = check::getDoubleValueFromTo(0, 100, "Введите количество процентов: ", "Неверный ввод!");
                         searchTask(percents, sort);
+                        break;
+                    }
+                    break;
+                case 4:
+                    flag = check::getCharValueFromString("бм", "Отфильтровать с меньшим значением или с большим? (б/м): ", "Неверный ввод!") == 'б' ? true : false;
+                    std::cout << "1. Фильтрация по количеству баллов" << std::endl;
+                    std::cout << "2. Фильтрация по количеству процентов" << std::endl;
+                    std::cout << "3. <- Назад" << std::endl;
+
+                    switch (check::getNaturalValueBefore(3, ">>> ", "Неверный ввод!")) {
+                    case 1:
+                        points = check::getNaturalValue("Введите количество баллов: ", "Неверный ввод!");
+                        searchTaskWithBorder(points, sort, flag);
+                        break;
+                    case 2:
+                        percents = check::getDoubleValueFromTo(0, 100, "Введите количество процентов: ", "Неверный ввод!");
+                        searchTaskWithBorder(percents, sort, flag);
                         break;
                     }
                     break;

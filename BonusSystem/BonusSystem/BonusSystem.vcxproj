@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BonusSytem.dat" />
+    <None Include="ClassDiagram.cd" />
     <None Include="LoginSytem.dat" />
     <None Include="PaidBonuses.dat" />
     <None Include="SourceBonusSystem.dat" />

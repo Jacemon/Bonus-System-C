@@ -6,15 +6,14 @@ private:
 	double _percent;
 public:
 	TaskByPercent();
-	TaskByPercent(std::string, double percent);
+	TaskByPercent(std::string text, double percent);
 
 	double getPercent();
-	void setPercent(double);
+	void setPercent(double percents);
 
-	friend std::ostream& operator<<(std::ostream&, TaskByPercent);
-	friend std::ofstream& operator<<(std::ofstream&, TaskByPercent);
-	friend std::ifstream& operator>>(std::ifstream&, TaskByPercent&);
+	friend std::ostream& operator<<(std::ostream& os, TaskByPercent task);
+	friend std::ofstream& operator<<(std::ofstream& ofs, TaskByPercent task);
+	friend std::ifstream& operator>>(std::ifstream& ifs, TaskByPercent& task);
 
-	void setTaskText(std::string);
+	void setTaskText(std::string text);
 };
-

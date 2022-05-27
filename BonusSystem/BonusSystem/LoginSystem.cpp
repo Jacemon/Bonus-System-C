@@ -25,11 +25,9 @@ std::shared_ptr<User> LoginSystem::LogIn(std::string login, std::string password
 }
 
 LoginSystem::LoginSystem() { }
-
 LoginSystem::LoginSystem(const LoginSystem& copy) : 
     _users(copy._users), _userLogin_employeeID(copy._userLogin_employeeID) { }
    
-
 void LoginSystem::addUser(std::string login, std::string password, User::Role role) {
 	_users.insert(std::pair<std::string, 
         std::shared_ptr<User>>(login, std::make_shared<User>(login, password, role)));
@@ -38,14 +36,12 @@ void LoginSystem::addUser(User user) {
     _users.insert(std::pair<std::string, 
         std::shared_ptr<User>>(user._login, std::make_shared<User>(user)));
 }
-
 void LoginSystem::deleteUser(std::string login) {
     if (getUserByLogin(login)->_role == User::Role::admin) {
         return;
     }
     _users.erase(login);
 }
-
 void LoginSystem::editUserLogin(std::string login, std::string newLogin) {
     std::map<std::string, std::shared_ptr<User>>::iterator it = _users.find(login);
     if (it == _users.end()) {
@@ -73,7 +69,6 @@ void LoginSystem::editUserPassword(std::string login, std::string newPassword) {
     std::shared_ptr<User> user = it->second;
     (*user)._passwordHash = std::hash<std::string>{ }(newPassword);
 }
-
 void LoginSystem::setEmployeeToUser(std::shared_ptr<BonusSystem> bonusSystem, std::string login, int employeeId) {
     std::shared_ptr<Employee<std::string>> employee = bonusSystem->getEmployeeById(employeeId);
     if (employee == nullptr) {
@@ -84,7 +79,6 @@ void LoginSystem::setEmployeeToUser(std::shared_ptr<BonusSystem> bonusSystem, st
     _userLogin_employeeID.erase(login);
     _userLogin_employeeID.insert(std::pair<std::string, int>(login, employeeId));
 }
-
 void LoginSystem::deleteEmployeeOnUsers(int employeeId) {
     std::map<std::string, std::shared_ptr<User>>::iterator it = _users.begin();
 
@@ -119,7 +113,6 @@ std::ofstream& operator<<(std::ofstream& ofs, LoginSystem loginSystem) {
     }
     return ofs;
 }
-
 std::ifstream& operator>>(std::ifstream& ifs, LoginSystem& loginSystem) {
     try {
         int userSize, userEmployeeSize;
@@ -137,13 +130,13 @@ std::ifstream& operator>>(std::ifstream& ifs, LoginSystem& loginSystem) {
         }
         for (int i = 0; i < userEmployeeSize; i++) {
             ifs >> login >> employeeId;
-            loginSystem._userLogin_employeeID.insert(std::pair < std::string, int>(login, employeeId));
+            loginSystem._userLogin_employeeID.insert(std::pair<std::string, int>(login, employeeId));
         }
         if (ifs.fail() != 0) {
             throw std::string();
         }
         auto bonusSystem = BonusSystem::getInstance();
-        for (auto usrLempID : loginSystem._userLogin_employeeID) {
+        for (auto& usrLempID : loginSystem._userLogin_employeeID) {
             loginSystem.setEmployeeToUser(bonusSystem, usrLempID.first, usrLempID.second);
         }
     }

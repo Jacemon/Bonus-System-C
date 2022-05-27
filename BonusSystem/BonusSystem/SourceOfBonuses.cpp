@@ -17,6 +17,13 @@ double SourceOfBonuses::takeMoney(double takedMoney) {
 	return 0.0;
 }
 
+double SourceOfBonuses::operator+(SourceOfBonuses sb) {
+	return _money + sb._money;
+}
+double SourceOfBonuses::operator+(double value) {
+	return _money + value;
+}
+
 std::ofstream& operator<<(std::ofstream& ofs, SourceOfBonuses sb) {
 	ofs << sb._name << std::endl << sb._money;
 	return ofs;

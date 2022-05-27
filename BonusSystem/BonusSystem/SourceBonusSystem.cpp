@@ -16,7 +16,7 @@ std::shared_ptr<SourceBonusSystem> SourceBonusSystem::resetToDefault() {
 double SourceBonusSystem::takeMoney(double money) {
     double allMoney = 0;
     for (auto sb : _sourcesOfBonuses) {
-        allMoney += sb->getMoney();
+        allMoney = (*sb) + allMoney;
     }
     if (allMoney < money) {
         return 0.0;
@@ -45,7 +45,6 @@ std::ofstream& operator<<(std::ofstream& ofs, SourceBonusSystem sourceBonusSyste
     }
     return ofs;
 }
-
 std::ifstream& operator>>(std::ifstream& ifs, SourceBonusSystem& sourceBonusSystem) {
     try {
         SourceOfBonuses sb;

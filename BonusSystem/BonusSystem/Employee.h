@@ -20,26 +20,26 @@ private:
 	std::map<int, std::shared_ptr<Task>> _completedTasks;
 public:
 	Employee();
-	Employee(T, double);
+	Employee(T name, double salary);
 
 	T getName();
-	void setName(T);
+	void setName(T name);
 
 	double getSalary();
-	void setSalary(double);
+	void setSalary(double salary);
 
 	int getPoints();
-	void setPoints(int);
+	void setPoints(int points);
 	double getPercents();
-	void setPercents(double);
+	void setPercents(double percents);
 
-	void addTask(std::pair<int, std::shared_ptr<Task>>);
-	void addCompletedTask(std::pair<int, std::shared_ptr<Task>>);
-	bool deleteTask(int);
-	bool deleteMarkedTask(int);
-	bool deleteCompletedTask(int);
-	void markTaskCompleted(int);
-	void completeTask(int);
+	void addTask(std::pair<int, std::shared_ptr<Task>> task);
+	void addCompletedTask(std::pair<int, std::shared_ptr<Task>> task);
+	bool deleteTask(int id);
+	bool deleteMarkedTask(int id);
+	bool deleteCompletedTask(int id);
+	void markTaskCompleted(int id);
+	void completeTask(int id);
 
 	std::map<int, std::shared_ptr<Task>> getCurrentTasks();
 	std::map<int, std::shared_ptr<Task>> getMarkedTasks();

@@ -1,2 +1,12 @@
 ﻿  BonusSystem.cpp
+  LoginSystem.cpp
+  Main.cpp
+  Menu.cpp
+  SourceBonusSystem.cpp
+  SourceOfBonuses.cpp
+  Task.cpp
+  TaskByPercent.cpp
+  TaskByPoint.cpp
+  User.cpp
+  Создание кода...
   BonusSystem.vcxproj -> C:\Users\Jacemon\Source\Repos\Bonus-System\BonusSystem\x64\Debug\BonusSystem.exe
