@@ -3,79 +3,79 @@
 #include <iostream>
 
 namespace check {
-	// Всё только для английской раскладки
-	// P.S. Теперь и для русской! (кроме пороля, возможно исправлю, но пока не вижу смысла)
+	// Р’СЃС‘ С‚РѕР»СЊРєРѕ РґР»СЏ Р°РЅРіР»РёР№СЃРєРѕР№ СЂР°СЃРєР»Р°РґРєРё
+	// P.S. РўРµРїРµСЂСЊ Рё РґР»СЏ СЂСѓСЃСЃРєРѕР№! (РєСЂРѕРјРµ РїРѕСЂРѕР»СЏ, РІРѕР·РјРѕР¶РЅРѕ РёСЃРїСЂР°РІР»СЋ, РЅРѕ РїРѕРєР° РЅРµ РІРёР¶Сѓ СЃРјС‹СЃР»Р°)
 	
 	bool isInt32Value(std::string value);
-	// Проверяет, является ли число натуральным
+	// РџСЂРѕРІРµСЂСЏРµС‚, СЏРІР»СЏРµС‚СЃСЏ Р»Рё С‡РёСЃР»Рѕ РЅР°С‚СѓСЂР°Р»СЊРЅС‹Рј
 	bool isNaturalValue(std::string value);
-	// Проверяет, является ли число с плавающей точкой
+	// РџСЂРѕРІРµСЂСЏРµС‚, СЏРІР»СЏРµС‚СЃСЏ Р»Рё С‡РёСЃР»Рѕ СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№
 	bool isDoubleValue(std::string value);
-	// Проверяет, является ли строка словом
+	// РџСЂРѕРІРµСЂСЏРµС‚, СЏРІР»СЏРµС‚СЃСЏ Р»Рё СЃС‚СЂРѕРєР° СЃР»РѕРІРѕРј
 	bool isWordValue(std::string value);
-	// Проверяет, является ли строка словом в верхнем регистре
+	// РџСЂРѕРІРµСЂСЏРµС‚, СЏРІР»СЏРµС‚СЃСЏ Р»Рё СЃС‚СЂРѕРєР° СЃР»РѕРІРѕРј РІ РІРµСЂС…РЅРµРј СЂРµРіРёСЃС‚СЂРµ
 	bool isUppercaseWordValue(std::string value);
-	// Проверяет, является ли строка словом в нижнем регистре
+	// РџСЂРѕРІРµСЂСЏРµС‚, СЏРІР»СЏРµС‚СЃСЏ Р»Рё СЃС‚СЂРѕРєР° СЃР»РѕРІРѕРј РІ РЅРёР¶РЅРµРј СЂРµРіРёСЃС‚СЂРµ
 	bool isLovercaseWordValue(std::string value);
-	// Проверяет, является ли строка именем собственным (первая буква прописная, остальные строчные)
+	// РџСЂРѕРІРµСЂСЏРµС‚, СЏРІР»СЏРµС‚СЃСЏ Р»Рё СЃС‚СЂРѕРєР° РёРјРµРЅРµРј СЃРѕР±СЃС‚РІРµРЅРЅС‹Рј (РїРµСЂРІР°СЏ Р±СѓРєРІР° РїСЂРѕРїРёСЃРЅР°СЏ, РѕСЃС‚Р°Р»СЊРЅС‹Рµ СЃС‚СЂРѕС‡РЅС‹Рµ)
 	bool isProperNameValue(std::string value);
-	// Проверяет, является ли строка буквой
+	// РџСЂРѕРІРµСЂСЏРµС‚, СЏРІР»СЏРµС‚СЃСЏ Р»Рё СЃС‚СЂРѕРєР° Р±СѓРєРІРѕР№
 	bool isLetterValue(char value);
 	bool isLetterValue(std::string value);
-	// Проверяет является ли строка паролем с
-	// - минимальным количеством символов symbolCount
-	// - минимальным количеством заглавных букв uppercaseLetterCount
-	// - минимальным количеством строчных букв lowercaseLetterCount
-	// - минимальным количеством цифр numberCount
-	// - минимальным количеством специальных символов specialCharacterCount
-	// Если значение отрицательное, то соответсвующая группа сиволов не
-	// сможет входить в пароль
-	// symbolsRepeats отвечает за количество допустимых повторяющихся символов подряд
-	// Если данное значение отрицательное, то повторяющие символы игнорируются
+	// РџСЂРѕРІРµСЂСЏРµС‚ СЏРІР»СЏРµС‚СЃСЏ Р»Рё СЃС‚СЂРѕРєР° РїР°СЂРѕР»РµРј СЃ
+	// - РјРёРЅРёРјР°Р»СЊРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј СЃРёРјРІРѕР»РѕРІ symbolCount
+	// - РјРёРЅРёРјР°Р»СЊРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј Р·Р°РіР»Р°РІРЅС‹С… Р±СѓРєРІ uppercaseLetterCount
+	// - РјРёРЅРёРјР°Р»СЊРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј СЃС‚СЂРѕС‡РЅС‹С… Р±СѓРєРІ lowercaseLetterCount
+	// - РјРёРЅРёРјР°Р»СЊРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј С†РёС„СЂ numberCount
+	// - РјРёРЅРёРјР°Р»СЊРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј СЃРїРµС†РёР°Р»СЊРЅС‹С… СЃРёРјРІРѕР»РѕРІ specialCharacterCount
+	// Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРµ, С‚Рѕ СЃРѕРѕС‚РІРµС‚СЃРІСѓСЋС‰Р°СЏ РіСЂСѓРїРїР° СЃРёРІРѕР»РѕРІ РЅРµ
+	// СЃРјРѕР¶РµС‚ РІС…РѕРґРёС‚СЊ РІ РїР°СЂРѕР»СЊ
+	// symbolsRepeats РѕС‚РІРµС‡Р°РµС‚ Р·Р° РєРѕР»РёС‡РµСЃС‚РІРѕ РґРѕРїСѓСЃС‚РёРјС‹С… РїРѕРІС‚РѕСЂСЏСЋС‰РёС…СЃСЏ СЃРёРјРІРѕР»РѕРІ РїРѕРґСЂСЏРґ
+	// Р•СЃР»Рё РґР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРµ, С‚Рѕ РїРѕРІС‚РѕСЂСЏСЋС‰РёРµ СЃРёРјРІРѕР»С‹ РёРіРЅРѕСЂРёСЂСѓСЋС‚СЃСЏ
 	bool isPasswordValue(std::string value, int symbolCount = 0, int uppercaseLetterCount = 0, int lowercaseLetterCount = 0, 
 		int numberCount = 0, int specialCharacterCount = 0, int symbolsRepeats = -1);
 
-	// Организации ввода:
+	// РћСЂРіР°РЅРёР·Р°С†РёРё РІРІРѕРґР°:
 	//
-	// Символа
+	// РЎРёРјРІРѕР»Р°
 	char getCharValue(std::string outputString = "Input character: ", std::string errorString = "Incorrect input!");
-	// Символа из строки
+	// РЎРёРјРІРѕР»Р° РёР· СЃС‚СЂРѕРєРё
 	char getCharValueFromString(std::string characters, std::string outputString = "Input character: ", std::string errorString = "Incorrect input!");
-	// Буквы
+	// Р‘СѓРєРІС‹
 	char getLetterValue(std::string outputString = "Input character: ", std::string errorString = "Incorrect input!");
-	// Буквы из строки
+	// Р‘СѓРєРІС‹ РёР· СЃС‚СЂРѕРєРё
 	char getLetterValueFromString(std::string characters, std::string outputString = "Input character: ", std::string errorString = "Incorrect input!");
-	// Целого числа
+	// Р¦РµР»РѕРіРѕ С‡РёСЃР»Р°
 	int getInt32Value(std::string outputString = "Input integer value: ", std::string errorString = "Incorrect input!");
-	// Целого числа из диапазона [leftBorder; rightBorder]
+	// Р¦РµР»РѕРіРѕ С‡РёСЃР»Р° РёР· РґРёР°РїР°Р·РѕРЅР° [leftBorder; rightBorder]
 	int getInt32ValueFromTo(int leftBorder, int rightBorder, std::string outputString = "Input integer value: ", std::string errorString = "Incorrect input!");
-	// Натурального числа
+	// РќР°С‚СѓСЂР°Р»СЊРЅРѕРіРѕ С‡РёСЃР»Р°
 	int getNaturalValue(std::string outputString = "Input natural value: ", std::string errorString = "Incorrect input!");
-	// Натурального числа из диапазона [1; rightBorder]
+	// РќР°С‚СѓСЂР°Р»СЊРЅРѕРіРѕ С‡РёСЃР»Р° РёР· РґРёР°РїР°Р·РѕРЅР° [1; rightBorder]
 	// 1 < rightBorder
 	int getNaturalValueBefore(int rightBorder, std::string outputString = "Input natural value: ", std::string errorString = "Incorrect input!");
-	// Натурального числа из диапазона [leftBorder; rightBorder]
+	// РќР°С‚СѓСЂР°Р»СЊРЅРѕРіРѕ С‡РёСЃР»Р° РёР· РґРёР°РїР°Р·РѕРЅР° [leftBorder; rightBorder]
 	// 1 <= leftBorder < rightBorder
 	int getNaturalValueFromTo(int leftBorder, int rightBorder, std::string outputString = "Input natural value: ", std::string errorString = "Incorrect input!");
-	// Числа с плавающей точкой
+	// Р§РёСЃР»Р° СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№
 	double getDoubleValue(std::string outputString = "Input float value: ", std::string errorString = "Incorrect input!");
-	// Числа с плавающей точкой из диапазона [leftBorder; rightBorder]
+	// Р§РёСЃР»Р° СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№ РёР· РґРёР°РїР°Р·РѕРЅР° [leftBorder; rightBorder]
 	// leftBorder < rightBorder
 	double getDoubleValueFromTo(double leftBorder, double rightBorder, std::string outputString = "Input float value: ", std::string errorString = "Incorrect input!");
-	// Слова без учёта регистра букв
+	// РЎР»РѕРІР° Р±РµР· СѓС‡С‘С‚Р° СЂРµРіРёСЃС‚СЂР° Р±СѓРєРІ
 	std::string getWordValue(std::string outputString = "Input word: ", std::string errorString = "Incorrect input!");
-	// Слова с заглавной буквы
+	// РЎР»РѕРІР° СЃ Р·Р°РіР»Р°РІРЅРѕР№ Р±СѓРєРІС‹
 	std::string getProperNameValue(std::string outputString = "Input word: ", std::string errorString = "Incorrect input!");
-	// Проверяет является ли строка паролем с
-	// - минимальным количеством символов symbolCount
-	// - минимальным количеством заглавных букв uppercaseLetterCount
-	// - минимальным количеством строчных букв lowercaseLetterCount
-	// - минимальным количеством цифр numberCount
-	// - минимальным количеством специальных символов specialCharacterCount
-	// Если значение отрицательное, то соответсвующая группа сиволов не
-	// сможет входить в пароль
-	// symbolsRepeats отвечает за количество допустимых повторяющихся символов подряд
-	// Если данное значение отрицательное, то повторяющие символы игнорируются
+	// РџСЂРѕРІРµСЂСЏРµС‚ СЏРІР»СЏРµС‚СЃСЏ Р»Рё СЃС‚СЂРѕРєР° РїР°СЂРѕР»РµРј СЃ
+	// - РјРёРЅРёРјР°Р»СЊРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј СЃРёРјРІРѕР»РѕРІ symbolCount
+	// - РјРёРЅРёРјР°Р»СЊРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј Р·Р°РіР»Р°РІРЅС‹С… Р±СѓРєРІ uppercaseLetterCount
+	// - РјРёРЅРёРјР°Р»СЊРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј СЃС‚СЂРѕС‡РЅС‹С… Р±СѓРєРІ lowercaseLetterCount
+	// - РјРёРЅРёРјР°Р»СЊРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј С†РёС„СЂ numberCount
+	// - РјРёРЅРёРјР°Р»СЊРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј СЃРїРµС†РёР°Р»СЊРЅС‹С… СЃРёРјРІРѕР»РѕРІ specialCharacterCount
+	// Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРµ, С‚Рѕ СЃРѕРѕС‚РІРµС‚СЃРІСѓСЋС‰Р°СЏ РіСЂСѓРїРїР° СЃРёРІРѕР»РѕРІ РЅРµ
+	// СЃРјРѕР¶РµС‚ РІС…РѕРґРёС‚СЊ РІ РїР°СЂРѕР»СЊ
+	// symbolsRepeats РѕС‚РІРµС‡Р°РµС‚ Р·Р° РєРѕР»РёС‡РµСЃС‚РІРѕ РґРѕРїСѓСЃС‚РёРјС‹С… РїРѕРІС‚РѕСЂСЏСЋС‰РёС…СЃСЏ СЃРёРјРІРѕР»РѕРІ РїРѕРґСЂСЏРґ
+	// Р•СЃР»Рё РґР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРµ, С‚Рѕ РїРѕРІС‚РѕСЂСЏСЋС‰РёРµ СЃРёРјРІРѕР»С‹ РёРіРЅРѕСЂРёСЂСѓСЋС‚СЃСЏ
 	std::string getPasswordValue(std::string outputString = "Input password: ", std::string errorString = "Incorrect input!", int symbolCount = 0,
 		int uppercaseLetterCount = 0, int lowercaseLetterCount = 0, int numberCount = 0, int specialCharacterCount = 0, int symbolsRepeat = -1);
 }
