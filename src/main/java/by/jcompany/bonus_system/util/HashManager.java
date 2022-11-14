@@ -1,4 +1,4 @@
-package by.jcompany.bonus_system_server.util;
+package by.jcompany.bonus_system.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

@@ -1,8 +1,8 @@
-package by.jcompany.bonus_system_server.service;
+package by.jcompany.bonus_system.service;
 
-import by.jcompany.bonus_system_server.dao.Dao;
-import by.jcompany.bonus_system_server.dao.UserDao;
-import by.jcompany.bonus_system_server.entity.User;
+import by.jcompany.bonus_system.dao.Dao;
+import by.jcompany.bonus_system.dao.UserDao;
+import by.jcompany.bonus_system.entity.User;
 
 import java.util.List;
 

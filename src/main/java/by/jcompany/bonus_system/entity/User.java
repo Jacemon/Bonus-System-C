@@ -1,4 +1,4 @@
-package by.jcompany.bonus_system_server.entity;
+package by.jcompany.bonus_system.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

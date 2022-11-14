@@ -1,7 +1,7 @@
-package by.jcompany.bonus_system_server.util;
+package by.jcompany.bonus_system.util;
 
-import by.jcompany.bonus_system_server.entity.Employee;
-import by.jcompany.bonus_system_server.entity.User;
+import by.jcompany.bonus_system.entity.Employee;
+import by.jcompany.bonus_system.entity.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;

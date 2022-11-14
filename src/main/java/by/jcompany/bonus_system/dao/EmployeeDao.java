@@ -1,7 +1,7 @@
-package by.jcompany.bonus_system_server.dao;
+package by.jcompany.bonus_system.dao;
 
-import by.jcompany.bonus_system_server.entity.Employee;
-import by.jcompany.bonus_system_server.util.HibernateSessionFactory;
+import by.jcompany.bonus_system.entity.Employee;
+import by.jcompany.bonus_system.util.HibernateSessionFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

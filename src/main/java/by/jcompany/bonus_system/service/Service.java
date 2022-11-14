@@ -1,4 +1,4 @@
-package by.jcompany.bonus_system_server.service;
+package by.jcompany.bonus_system.service;
 
 import java.util.List;
 

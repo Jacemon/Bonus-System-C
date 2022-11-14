@@ -1,4 +1,4 @@
-package by.jcompany.bonus_system_server.dao;
+package by.jcompany.bonus_system.dao;
 
 import java.util.List;
 
